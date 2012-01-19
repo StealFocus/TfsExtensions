@@ -4,9 +4,6 @@
     using System.Web.Mvc;
     using System.Web.Routing;
 
-    /// <summary>
-    /// 
-    /// </summary>
     /// <remarks>
     /// Note: For instructions on enabling IIS6 or IIS7 classic mode, visit http://go.microsoft.com/?LinkId=9394801
     /// </remarks>
@@ -24,8 +21,12 @@
 
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            if (routes == null)
+            {
+                throw new ArgumentNullException("routes");
+            }
 
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
                 "Default",
                 "{controller}/{action}/{id}",
@@ -35,7 +36,6 @@
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }
