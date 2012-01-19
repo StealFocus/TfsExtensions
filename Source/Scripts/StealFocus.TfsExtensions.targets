@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project 
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- IMPORTANT - you must import these targets for the build scripts to function. -->
+  <Import Project="..\packages\StealFocus.Build.1.0.20117.0\Scripts\StealFocus.Build.tasks" />
+
+  <PropertyGroup>
+    <CompanyName>StealFocus</CompanyName>
+    <Culture>en-GB</Culture>
+    <ProductName>TfsExtensions</ProductName>
+    <StrongNamePublicKey>00240000048000009400000006020000002400005253413100040000010001001f24287e8d2df9fd3cbdae7a1bcc7870dd0d31c06b2da1d90bab2251ee5ae15b4ad59ffb88dca41a8f527f853b20e5bd1d12c716585f151d2f6d1875fa17a207251ee2d913c00db426f7d3f8f0311bc844242b4f1754d02e4162f3f5537304613a9f1e6a0754ef8db67ceb57816ad71923ee52acb3036c9f470eaabdf290d69f</StrongNamePublicKey>
+    <StrongNamePublicKeyToken>3458d8bc72e7bd2e</StrongNamePublicKeyToken>
+    <StyleCopVersion>4.7</StyleCopVersion>
+  </PropertyGroup>
+
+</Project>

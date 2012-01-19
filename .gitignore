@@ -28,7 +28,8 @@ _ReSharper*/
 obj/
 Thumbs.db
 
+*.sdf
+StealFocus.Build.state
+!Source/.nuget/NuGet.exe
+#Source/packages/
 AssemblyInfoCommon.g.cs
-/Source/Artefacts/NuGet/StealFocus.Build/Scripts
-/Source/Artefacts/NuGet/StealFocus.Build/*.nupkg
-!/Tools/NuGet/NuGet.exe
