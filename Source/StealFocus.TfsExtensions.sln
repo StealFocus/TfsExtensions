@@ -42,6 +42,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E3353C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StealFocus.TfsExtensions.Tests", "StealFocus.TfsExtensions.Tests\StealFocus.TfsExtensions.Tests.csproj", "{DC9CB307-5AA4-49FD-94EF-BC5B2073737D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StealFocus.TfsExtensions.Web.UI", "StealFocus.TfsExtensions.Web.UI\StealFocus.TfsExtensions.Web.UI.csproj", "{5EE117FD-101B-45C2-8DBD-8B92B0641075}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StealFocus.TfsExtensions.Web.UI.Tests", "StealFocus.TfsExtensions.Web.UI.Tests\StealFocus.TfsExtensions.Web.UI.Tests.csproj", "{F6A3009C-07C9-4B41-ACAE-AFC186278514}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = StealFocus.TfsExtensions.vsmdi
@@ -59,11 +63,20 @@ Global
 		{DC9CB307-5AA4-49FD-94EF-BC5B2073737D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC9CB307-5AA4-49FD-94EF-BC5B2073737D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC9CB307-5AA4-49FD-94EF-BC5B2073737D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EE117FD-101B-45C2-8DBD-8B92B0641075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EE117FD-101B-45C2-8DBD-8B92B0641075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EE117FD-101B-45C2-8DBD-8B92B0641075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EE117FD-101B-45C2-8DBD-8B92B0641075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6A3009C-07C9-4B41-ACAE-AFC186278514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A3009C-07C9-4B41-ACAE-AFC186278514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A3009C-07C9-4B41-ACAE-AFC186278514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A3009C-07C9-4B41-ACAE-AFC186278514}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DC9CB307-5AA4-49FD-94EF-BC5B2073737D} = {7205E45C-5B5A-41BB-BA69-12436C923833}
+		{F6A3009C-07C9-4B41-ACAE-AFC186278514} = {7205E45C-5B5A-41BB-BA69-12436C923833}
 	EndGlobalSection
 EndGlobal

@@ -61,14 +61,14 @@
   </ItemGroup>
   
   <ItemGroup>
-    <!--<WebProject Include="$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI\StealFocus.TfsExtensions.Web.UI.csproj">
+    <WebProject Include="$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI\StealFocus.TfsExtensions.Web.UI.csproj">
       <Package>true</Package>
       <PackageAsSingleFile>false</PackageAsSingleFile>
       <PackageTempDir>$(SystemDrive)\StlFcsTfsExt\StealFocus.TfsExtensions.Web.UI</PackageTempDir>
       <IncludeIisSettings>true</IncludeIisSettings>
       <IncludeAppPool>true</IncludeAppPool>
       <DeployEncryptKey>Password1</DeployEncryptKey>
-    </WebProject>-->
+    </WebProject>
   </ItemGroup>
 
   <ItemGroup>
@@ -145,15 +145,15 @@
 
   <ItemGroup>
     <!-- Add "WebApplication" items as required. These will create web applications in IIS with the provided settings. -->
-    <!--<WebApplication Include="$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI">
+    <WebApplication Include="$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI">
       <Name>StealFocus.TfsExtensions.Web.UI</Name>
       <WebSiteName>Default Web Site</WebSiteName>
-      <WebApplicationPoolName>StealFocus.TfsExtensions.Web.UI</WebApplicationPoolName>
-      <AnonymousAuthentication>true</AnonymousAuthentication>
+      <WebApplicationPoolName>ASP.NET v4.0</WebApplicationPoolName>
+      <AnonymousAuthentication>false</AnonymousAuthentication>
       <BasicAuthentication>false</BasicAuthentication>
       <DigestAuthentication>false</DigestAuthentication>
-      <WindowsAuthentication>false</WindowsAuthentication>
-    </WebApplication>-->
+      <WindowsAuthentication>true</WindowsAuthentication>
+    </WebApplication>
   </ItemGroup>
   
   <ItemGroup>
