@@ -1,40 +1,111 @@
 ﻿namespace StealFocus.TfsExtensions.Web.UI.Controllers
 {
     using System;
-    using System.Collections.ObjectModel;
+    using System.Configuration;
+    using System.Globalization;
     using System.Web.Mvc;
+    using System.Web.Routing;
 
     using Microsoft.TeamFoundation.Client;
-    using Microsoft.TeamFoundation.Framework.Client;
-    using Microsoft.TeamFoundation.Framework.Common;
+
+    using StealFocus.TfsExtensions.Dto;
 
     public class ReleaseNotesController : Controller
     {
-        public ActionResult Index()
+        public static TfsConfigurationServer GetTfsConfigurationServer()
         {
-            Uri tfsUrl = new Uri("http://tfspoc.acme.com");
-            TfsCredentialsProvider tfsCredentialsProvider = new TfsCredentialsProvider("___", "___", "___");
-            TfsConfigurationServer tfsConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(tfsUrl, tfsCredentialsProvider);
-            tfsConfigurationServer.Authenticate();
-            ReadOnlyCollection<CatalogNode> collectionNodes = tfsConfigurationServer.CatalogNode.QueryChildren(new[] { CatalogResourceTypes.ProjectCollection }, false, CatalogQueryOptions.None);
-            foreach (CatalogNode collectionNode in collectionNodes)
+            Uri uri = new Uri(ConfigurationManager.AppSettings["TfsUrl"]);
+            string domain = ConfigurationManager.AppSettings["TfsUserDomain"];
+            string username = ConfigurationManager.AppSettings["TfsUsername"];
+            string password = ConfigurationManager.AppSettings["TfsUserPassword"];
+            if (string.IsNullOrEmpty(username))
             {
-                Guid collectionId = new Guid(collectionNode.Resource.Properties["InstanceId"]);
-                TfsTeamProjectCollection teamProjectCollection = tfsConfigurationServer.GetTeamProjectCollection(collectionId);
-                System.Diagnostics.Debug.WriteLine("tpc name - " + teamProjectCollection.Name);
+                return TfsConfigurationServerFactoryExtensions.GetConfigurationServerAndAuthenticate(uri);
             }
 
-            return View();
+            return TfsConfigurationServerFactoryExtensions.GetConfigurationServerAndAuthenticate(uri, domain, username, password);
         }
 
-        public ActionResult SingleBuild()
+        public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult ListOfBuilds()
+        public ActionResult TeamProject()
         {
-            return View();
+            TeamProjectDtoCollection teamProjects = GetTfsConfigurationServer().GetAllTeamProjectsInAllTeamProjectCollections();
+            return View(teamProjects);
+        }
+
+        [HttpGet]
+        public ActionResult TeamBuildDefinitions(Guid teamProjectCollectionId, string teamProjectName)
+        {
+            BuildDefinitionDtoCollection buildDefinitionDtoCollection = GetTfsConfigurationServer().GetBuildDefinitions(teamProjectCollectionId, teamProjectName);
+            ViewData["TeamProjectCollectionId"] = teamProjectCollectionId;
+            ViewData["TeamProjectName"] = teamProjectName;
+            return View(buildDefinitionDtoCollection);
+        }
+
+        [HttpPost]
+        public ActionResult TeamBuildDefinitions(FormCollection formCollection)
+        {
+            if (formCollection == null)
+            {
+                throw new ArgumentNullException("formCollection");
+            }
+
+            Guid teamProjectCollectionId = Guid.Parse(formCollection[FormCollectionItemName.TeamProjectCollectionId]);
+            string teamProjectName = formCollection[FormCollectionItemName.TeamProjectName];
+            string selectedTeamBuildDefinitions = formCollection[FormCollectionItemName.SelectedTeamBuildDefinitions];
+            RouteValueDictionary routeValueDictionary = new RouteValueDictionary();
+            routeValueDictionary.Add("teamProjectCollectionId", teamProjectCollectionId);
+            routeValueDictionary.Add("teamProjectName", teamProjectName);
+            routeValueDictionary.Add("selectedTeamBuildDefinitions", selectedTeamBuildDefinitions);
+            return RedirectToAction("TeamBuilds", routeValueDictionary);
+        }
+
+        [HttpGet]
+        public ActionResult TeamBuilds(Guid teamProjectCollectionId, string teamProjectName, string selectedTeamBuildDefinitions)
+        {
+            if (string.IsNullOrEmpty(selectedTeamBuildDefinitions))
+            {
+                throw new ArgumentNullException("selectedTeamBuildDefinitions");
+            }
+
+            ViewData["TeamProjectCollectionId"] = teamProjectCollectionId;
+            ViewData["TeamProjectName"] = teamProjectName;
+            string[] selectedTeamBuildDefinitionsList = selectedTeamBuildDefinitions.Split(',');
+            TeamBuildDtoCollection teamBuildDtoCollection = GetTfsConfigurationServer().GetTeamBuilds(teamProjectCollectionId, teamProjectName, selectedTeamBuildDefinitionsList);
+            return View(teamBuildDtoCollection);
+        }
+
+        [HttpPost]
+        public ActionResult TeamBuilds(FormCollection formCollection)
+        {
+            if (formCollection == null)
+            {
+                throw new ArgumentNullException("formCollection");
+            }
+
+            Guid teamProjectCollectionId = Guid.Parse(formCollection[FormCollectionItemName.TeamProjectCollectionId]);
+            string teamProjectName = formCollection[FormCollectionItemName.TeamProjectName];
+            string selectedTeamBuildUris = formCollection[FormCollectionItemName.SelectedTeamBuildUris];
+            string redirectUrl = GetReportUrl(teamProjectCollectionId, teamProjectName, selectedTeamBuildUris);
+            return Redirect(redirectUrl);
+        }
+
+        private static string GetReportUrl(Guid teamProjectCollectionId, string teamProjectName, string selectedTeamBuildUris)
+        {
+            return string
+                .Format(
+                    CultureInfo.CurrentCulture,
+                    "~/ReleaseNotes/Show.aspx?{0}={1}&{2}={3}&{4}={5}",
+                    QueryStringKey.TeamProjectCollectionId,
+                    teamProjectCollectionId,
+                    QueryStringKey.TeamProjectName,
+                    teamProjectName,
+                    QueryStringKey.SelectedTeamBuildUris,
+                    selectedTeamBuildUris);
         }
     }
 }

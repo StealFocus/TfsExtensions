@@ -1,0 +1,43 @@
+﻿@using StealFocus.TfsExtensions.Dto
+@using StealFocus.TfsExtensions.Web.UI.Controllers
+
+@model TeamBuildDtoCollection
+
+@{
+    ViewBag.Title = "SelectBuilds";
+}
+
+<h2>SelectBuilds</h2>
+
+@using (Html.BeginForm())
+{
+    <table>
+        <tr><th>
+                Team Build Definition
+            </th>
+            <th>
+                Team Build Number
+            </th>
+            <th>
+                Include
+            </th>
+        </tr>
+        @foreach (TeamBuildDto teamBuild in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(item => teamBuild.DefinitionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => teamBuild.BuildNumber)
+                </td>
+                <td>
+                    <input type="checkbox" name="@FormCollectionItemName.SelectedTeamBuildUris" value="@teamBuild.Uri" />
+                </td>
+            </tr>
+        }
+    </table>
+    <input type="hidden" name="@FormCollectionItemName.TeamProjectCollectionId" value="@ViewData["TeamProjectCollectionId"]" />
+    <input type="hidden" name="@FormCollectionItemName.TeamProjectName" value="@ViewData["TeamProjectName"]" />
+    <input type="submit" />
+}

@@ -334,6 +334,7 @@
       <Word>mvc</Word>
       <Word>nu</Word>
       <Word>tfs</Word>
+      <Word>dto</Word>
     </Recognized>
     <Deprecated>
       <!-- 

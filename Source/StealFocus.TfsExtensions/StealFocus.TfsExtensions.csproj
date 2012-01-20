@@ -46,7 +46,11 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.Build.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,9 +60,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\BuildDefinitionDto.cs" />
+    <Compile Include="Dto\BuildDefinitionDtoCollection.cs" />
+    <Compile Include="Dto\TeamBuildDto.cs" />
+    <Compile Include="Dto\TeamBuildDtoCollection.cs" />
+    <Compile Include="Dto\TeamProjectDto.cs" />
+    <Compile Include="Dto\TeamProjectDtoCollection.cs" />
+    <Compile Include="Dto\WorkItemDto.cs" />
+    <Compile Include="Dto\WorkItemDtoCollection.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfoCommon.g.cs" />
+    <Compile Include="TeamProjectCollectionResourcePropertyName.cs" />
+    <Compile Include="TeamProjectResourcePropertyName.cs" />
+    <Compile Include="TfsConfigurationServerExtensions.cs" />
+    <Compile Include="TfsConfigurationServerFactoryExtensions.cs" />
     <Compile Include="TfsCredentialsProvider.cs" />
   </ItemGroup>
   <ItemGroup>

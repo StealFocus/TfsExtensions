@@ -1,0 +1,38 @@
+﻿@using StealFocus.TfsExtensions.Dto
+
+@model TeamProjectDtoCollection
+
+@{
+    ViewBag.Title = "TeamProject";
+}
+
+<h2>TeamProject</h2>
+
+<table>
+    <tr>
+        <th>
+            Team Project Collection Name
+        </th>
+        <th>
+            Team Project Name
+        </th>
+        <th>
+        </th>
+    </tr>
+
+@foreach (TeamProjectDto teamProject in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => teamProject.CollectionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => teamProject.DisplayName)
+        </td>
+        <td>
+            @Html.ActionLink("Select", "TeamBuildDefinitions", new { teamProjectCollectionId = teamProject.CollectionId, teamProjectName = teamProject.DisplayName })
+        </td>
+    </tr>
+}
+
+</table>

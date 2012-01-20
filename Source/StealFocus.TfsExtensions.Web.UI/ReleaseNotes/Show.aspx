@@ -23,7 +23,7 @@
         </rsweb:ReportViewer>
         <asp:ObjectDataSource ID="ReleaseNotes" runat="server" 
             SelectMethod="GetSelected" 
-            TypeName="StealFocus.TfsExtensions.Web.UI.Models.ReleaseNote"></asp:ObjectDataSource>
+            TypeName="StealFocus.TfsExtensions.Web.UI.ReleaseNotes.Show"></asp:ObjectDataSource>
     </form>
 </body>
 </html>
