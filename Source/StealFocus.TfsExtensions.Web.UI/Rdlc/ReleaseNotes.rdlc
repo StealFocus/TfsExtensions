@@ -78,28 +78,28 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>1.31758in</Width>
+              <Width>1.1405in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.52084in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.67558in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.69258in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.828in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.7655in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.72766in</Width>
+              <Width>0.85925in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.98425in</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>0.98425in</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>0.98425in</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>0.98425in</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>1.48425in</Width>
+              <Width>1.18217in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -668,7 +668,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -869,9 +868,9 @@
         </TablixRowHierarchy>
         <DataSetName>WorkItem</DataSetName>
         <Top>0.35222cm</Top>
-        <Left>0.12383cm</Left>
-        <Height>2.0555cm</Height>
-        <Width>20.90928cm</Width>
+        <Left>0cm</Left>
+        <Height>2.05549cm</Height>
+        <Width>16.9276cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -882,7 +881,7 @@
     <Height>11.03125in</Height>
     <Style />
   </Body>
-  <Width>8.38717in</Width>
+  <Width>6.67884in</Width>
   <Page>
     <PageHeader>
       <Height>1.4382cm</Height>
@@ -932,37 +931,6 @@
       <Height>1.54403cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
-      <ReportItems>
-        <Textbox Name="Textbox15">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>=Globals!ExecutionTime</Value>
-                  <Style />
-                </TextRun>
-              </TextRuns>
-              <Style />
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox15</rd:DefaultName>
-          <Top>0.43187cm</Top>
-          <Left>0.41487cm</Left>
-          <Height>0.6cm</Height>
-          <Width>3.42604cm</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-      </ReportItems>
       <Style>
         <Border>
           <Style>None</Style>
