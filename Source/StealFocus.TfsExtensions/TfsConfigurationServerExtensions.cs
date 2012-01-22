@@ -121,6 +121,17 @@
                     WorkItem workItem = workItemStore.GetWorkItem(workItemSummary.WorkItemId);
                     WorkItemDto workItemDto = new WorkItemDto();
                     workItemDto.Id = workItem.Id;
+                    workItemDto.ChangedBy = workItem.ChangedBy;
+                    workItemDto.ChangedDate = workItem.ChangedDate;
+                    workItemDto.CreatedBy = workItem.CreatedBy;
+                    workItemDto.CreatedDate = workItem.CreatedDate;
+                    workItemDto.Description = workItem.Description;
+                    workItemDto.Reason = workItem.Reason;
+                    workItemDto.State = workItem.State;
+                    workItemDto.Title = workItem.Title;
+                    workItemDto.Uri = workItem.Uri;
+                    workItemDto.TypeName = workItem.Type.Name;
+                    workItemDto.AssociatedBuildNumber = buildDetail.BuildNumber;
                     workItemDtoCollection.Add(workItemDto);
                 }
             }

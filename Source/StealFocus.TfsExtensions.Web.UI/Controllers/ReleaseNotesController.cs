@@ -14,16 +14,26 @@
     {
         public static TfsConfigurationServer GetTfsConfigurationServer()
         {
-            Uri uri = new Uri(ConfigurationManager.AppSettings["TfsUrl"]);
-            string domain = ConfigurationManager.AppSettings["TfsUserDomain"];
-            string username = ConfigurationManager.AppSettings["TfsUsername"];
-            string password = ConfigurationManager.AppSettings["TfsUserPassword"];
-            if (string.IsNullOrEmpty(username))
+            string tfsUrlAppSetting = ConfigurationManager.AppSettings["TfsUrl"];
+            Uri tfsUri;
+            if (string.IsNullOrEmpty(tfsUrlAppSetting))
             {
-                return TfsConfigurationServerFactoryExtensions.GetConfigurationServerAndAuthenticate(uri);
+                tfsUri = new Uri("http://" + System.Web.HttpContext.Current.Request.Url.Host);
+            }
+            else
+            {
+                tfsUri = new Uri(tfsUrlAppSetting);
             }
 
-            return TfsConfigurationServerFactoryExtensions.GetConfigurationServerAndAuthenticate(uri, domain, username, password);
+            string username = ConfigurationManager.AppSettings["TfsUsername"];
+            if (string.IsNullOrEmpty(username))
+            {
+                return TfsConfigurationServerFactoryExtensions.GetConfigurationServerAndAuthenticate(tfsUri);
+            }
+
+            string domain = ConfigurationManager.AppSettings["TfsUserDomain"];
+            string password = ConfigurationManager.AppSettings["TfsUserPassword"];
+            return TfsConfigurationServerFactoryExtensions.GetConfigurationServerAndAuthenticate(tfsUri, domain, username, password);
         }
 
         public ActionResult Index()

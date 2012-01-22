@@ -14,10 +14,10 @@
         </asp:ScriptManager>
         <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" 
             Font-Size="8pt" InteractiveDeviceInfos="(Collection)" 
-            WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
+            WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Width="100%">
             <LocalReport ReportPath="Rdlc\ReleaseNotes.rdlc">
                 <DataSources>
-                    <rsweb:ReportDataSource DataSourceId="ReleaseNotes" Name="ReleaseNotes" />
+                    <rsweb:ReportDataSource DataSourceId="ReleaseNotes" Name="WorkItem" />
                 </DataSources>
             </LocalReport>
         </rsweb:ReportViewer>
