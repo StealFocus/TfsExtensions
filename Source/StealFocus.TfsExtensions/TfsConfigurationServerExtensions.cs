@@ -118,7 +118,7 @@
                 List<IWorkItemSummary> workItemSummaries = InformationNodeConverters.GetAssociatedWorkItems(buildDetail);
                 foreach (IWorkItemSummary workItemSummary in workItemSummaries)
                 {
-                    WorkItem workItem = workItemStore.GetWorkItem(workItemSummary.Id);
+                    WorkItem workItem = workItemStore.GetWorkItem(workItemSummary.WorkItemId);
                     WorkItemDto workItemDto = new WorkItemDto();
                     workItemDto.Id = workItem.Id;
                     workItemDtoCollection.Add(workItemDto);
