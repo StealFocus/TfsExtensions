@@ -112,28 +112,37 @@
             IBuildServer buildServer = tfsTeamProjectCollection.GetService<IBuildServer>();
             WorkItemStore workItemStore = tfsTeamProjectCollection.GetService<WorkItemStore>();
             IBuildDetail[] buildDetails = buildServer.QueryBuildsByUri(teamBuildUris, new[] { InformationTypes.AssociatedWorkItem }, QueryOptions.Definitions);
-            WorkItemDtoCollection workItemDtoCollection = new WorkItemDtoCollection();
+            Dictionary<int, WorkItemDto> workItems = new Dictionary<int, WorkItemDto>();
             foreach (IBuildDetail buildDetail in buildDetails)
             {
                 List<IWorkItemSummary> workItemSummaries = InformationNodeConverters.GetAssociatedWorkItems(buildDetail);
                 foreach (IWorkItemSummary workItemSummary in workItemSummaries)
                 {
-                    WorkItem workItem = workItemStore.GetWorkItem(workItemSummary.WorkItemId);
-                    WorkItemDto workItemDto = new WorkItemDto();
-                    workItemDto.Id = workItem.Id;
-                    workItemDto.ChangedBy = workItem.ChangedBy;
-                    workItemDto.ChangedDate = workItem.ChangedDate;
-                    workItemDto.CreatedBy = workItem.CreatedBy;
-                    workItemDto.CreatedDate = workItem.CreatedDate;
-                    workItemDto.Description = workItem.Description;
-                    workItemDto.Reason = workItem.Reason;
-                    workItemDto.State = workItem.State;
-                    workItemDto.Title = workItem.Title;
-                    workItemDto.Uri = workItem.Uri;
-                    workItemDto.TypeName = workItem.Type.Name;
-                    workItemDto.AssociatedBuildNumber = buildDetail.BuildNumber;
-                    workItemDtoCollection.Add(workItemDto);
+                    if (!workItems.ContainsKey(workItemSummary.WorkItemId))
+                    {
+                        WorkItem workItem = workItemStore.GetWorkItem(workItemSummary.WorkItemId);
+                        WorkItemDto workItemDto = new WorkItemDto();
+                        workItemDto.Id = workItem.Id;
+                        workItemDto.ChangedBy = workItem.ChangedBy;
+                        workItemDto.ChangedDate = workItem.ChangedDate;
+                        workItemDto.CreatedBy = workItem.CreatedBy;
+                        workItemDto.CreatedDate = workItem.CreatedDate;
+                        workItemDto.Description = workItem.Description;
+                        workItemDto.Reason = workItem.Reason;
+                        workItemDto.State = workItem.State;
+                        workItemDto.Title = workItem.Title;
+                        workItemDto.Uri = workItem.Uri;
+                        workItemDto.TypeName = workItem.Type.Name;
+                        workItemDto.AssociatedBuildNumber = buildDetail.BuildNumber;
+                        workItems.Add(workItem.Id, workItemDto);
+                    }
                 }
+            }
+
+            WorkItemDtoCollection workItemDtoCollection = new WorkItemDtoCollection();
+            foreach (KeyValuePair<int, WorkItemDto> keyValuePair in workItems)
+            {
+                workItemDtoCollection.Add(keyValuePair.Value);
             }
 
             return workItemDtoCollection;
