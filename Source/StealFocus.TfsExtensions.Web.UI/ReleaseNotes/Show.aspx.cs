@@ -12,8 +12,9 @@
         public static WorkItemDtoCollection GetSelected()
         {
             Guid teamProjectCollectionId = new Guid(HttpContext.Current.Request.QueryString[QueryStringKey.TeamProjectCollectionId]);
-            
-            // string teamProjectName = HttpContext.Current.Request.QueryString[QueryStringKey.TeamProjectName];
+
+            // Gets the Work Item IDs from the query string where each one is semi-colon separated with its Team Build definition name
+            // e.g. 1;TeamBuildA,3;TeamBuildB,6;TeamBuildA
             string selectedWorkItemIdCommaSeparatedList = HttpContext.Current.Request.QueryString[QueryStringKey.SelectedWorkItemIds];
             string[] selectedWorkItemIds = selectedWorkItemIdCommaSeparatedList.Split(',');
             int[] workItemIds = new int[selectedWorkItemIds.Length];

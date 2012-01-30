@@ -99,17 +99,15 @@
             }
 
             Guid teamProjectCollectionId = Guid.Parse(formCollection[FormCollectionItemName.TeamProjectCollectionId]);
-            string teamProjectName = formCollection[FormCollectionItemName.TeamProjectName];
             string selectedTeamBuildUris = formCollection[FormCollectionItemName.SelectedTeamBuildUris];
             RouteValueDictionary routeValueDictionary = new RouteValueDictionary();
             routeValueDictionary.Add("teamProjectCollectionId", teamProjectCollectionId);
-            routeValueDictionary.Add("teamProjectName", teamProjectName);
             routeValueDictionary.Add("selectedTeamBuildUris", selectedTeamBuildUris);
             return RedirectToAction("WorkItems", routeValueDictionary);
         }
 
         [HttpGet]
-        public ActionResult WorkItems(Guid teamProjectCollectionId, string teamProjectName, string selectedTeamBuildUris)
+        public ActionResult WorkItems(Guid teamProjectCollectionId, string selectedTeamBuildUris)
         {
             if (string.IsNullOrEmpty(selectedTeamBuildUris))
             {
@@ -117,7 +115,6 @@
             }
 
             ViewData["TeamProjectCollectionId"] = teamProjectCollectionId;
-            ViewData["TeamProjectName"] = teamProjectName;
             string[] selectedTeamBuildUrisList = selectedTeamBuildUris.Split(',');
             ArrayList arrayList = new ArrayList(selectedTeamBuildUrisList.Length);
             foreach (string selectedTeamBuildUri in selectedTeamBuildUrisList)
@@ -139,22 +136,22 @@
             }
 
             Guid teamProjectCollectionId = Guid.Parse(formCollection[FormCollectionItemName.TeamProjectCollectionId]);
-            string teamProjectName = formCollection[FormCollectionItemName.TeamProjectName];
+
+            // Gets the Work Item IDs from the form collection where each one is semi-colon separated with its Team Build definition name
+            // e.g. 1;TeamBuildA,3;TeamBuildB,6;TeamBuildA
             string selectedWorkItemIds = formCollection[FormCollectionItemName.SelectedWorkItemIds];
-            string redirectUrl = GetReportUrl(teamProjectCollectionId, teamProjectName, selectedWorkItemIds);
+            string redirectUrl = GetReportUrl(teamProjectCollectionId, selectedWorkItemIds);
             return Redirect(redirectUrl);
         }
 
-        private static string GetReportUrl(Guid teamProjectCollectionId, string teamProjectName, string selectedWorkItemIds)
+        private static string GetReportUrl(Guid teamProjectCollectionId, string selectedWorkItemIds)
         {
             return string
                 .Format(
                     CultureInfo.CurrentCulture,
-                    "~/ReleaseNotes/Show.aspx?{0}={1}&{2}={3}&{4}={5}",
+                    "~/ReleaseNotes/Show.aspx?{0}={1}&{2}={3}",
                     QueryStringKey.TeamProjectCollectionId,
                     teamProjectCollectionId,
-                    QueryStringKey.TeamProjectName,
-                    teamProjectName,
                     QueryStringKey.SelectedWorkItemIds,
                     selectedWorkItemIds);
         }
