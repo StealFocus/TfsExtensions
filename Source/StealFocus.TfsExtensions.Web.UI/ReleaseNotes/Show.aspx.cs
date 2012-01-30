@@ -1,6 +1,7 @@
 ﻿namespace StealFocus.TfsExtensions.Web.UI.ReleaseNotes
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Web;
     using System.Web.UI;
@@ -9,7 +10,7 @@
 
     public partial class Show : Page
     {
-        public static WorkItemDtoCollection GetSelected()
+        public static IEnumerable<WorkItemDto> GetSelected()
         {
             Guid teamProjectCollectionId = new Guid(HttpContext.Current.Request.QueryString[QueryStringKey.TeamProjectCollectionId]);
 
@@ -17,16 +18,18 @@
             // e.g. 1;TeamBuildA,3;TeamBuildB,6;TeamBuildA
             string selectedWorkItemIdCommaSeparatedList = HttpContext.Current.Request.QueryString[QueryStringKey.SelectedWorkItemIds];
             string[] selectedWorkItemIds = selectedWorkItemIdCommaSeparatedList.Split(',');
-            int[] workItemIds = new int[selectedWorkItemIds.Length];
-            string[] buildNumbers = new string[selectedWorkItemIds.Length];
+            WorkItemSummaryDto[] workItemSummaries = new WorkItemSummaryDto[selectedWorkItemIds.Length];
             for (int i = 0; i < selectedWorkItemIds.Length; i++)
             {
+                // Each item from "selectedWorkItemIds" is of the form "WorkItemId;TeamBuildDefinitionName" 
+                // e.g. "6;TeamBuildA"
                 string[] valueSplit = selectedWorkItemIds[i].Split(';');
-                workItemIds[i] = int.Parse(valueSplit[0], CultureInfo.CurrentCulture);
-                buildNumbers[i] = valueSplit[1];
+                workItemSummaries[i] = new WorkItemSummaryDto();
+                workItemSummaries[i].Id = int.Parse(valueSplit[0], CultureInfo.CurrentCulture);
+                workItemSummaries[i].AssociatedBuildNumber = valueSplit[1];
             }
 
-            WorkItemDtoCollection workItems = ReleaseNotesController.GetTfsConfigurationServer().GetWorkItemsFromTeamBuilds(teamProjectCollectionId, workItemIds, buildNumbers);
+            WorkItemDtoCollection workItems = ReleaseNotesController.GetTfsConfigurationServer().GetWorkItemsFromTeamBuilds(teamProjectCollectionId, workItemSummaries);
             return workItems;
         }
 

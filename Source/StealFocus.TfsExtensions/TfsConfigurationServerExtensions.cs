@@ -136,30 +136,25 @@
             return workItemDtoCollection;
         }
 
-        public static WorkItemDtoCollection GetWorkItemsFromTeamBuilds(this TfsConfigurationServer tfsConfigurationServer, Guid teamProjectCollectionId, int[] workItemIds, string[] buildNumbers)
+        public static WorkItemDtoCollection GetWorkItemsFromTeamBuilds(this TfsConfigurationServer tfsConfigurationServer, Guid teamProjectCollectionId, IEnumerable<WorkItemSummaryDto> workItems)
         {
             if (tfsConfigurationServer == null)
             {
                 throw new ArgumentNullException("tfsConfigurationServer");
             }
 
-            if (buildNumbers == null)
+            if (workItems == null)
             {
-                throw new ArgumentNullException("buildNumbers");
-            }
-
-            if (workItemIds == null)
-            {
-                throw new ArgumentNullException("workItemIds");
+                throw new ArgumentNullException("workItems");
             }
 
             TfsTeamProjectCollection tfsTeamProjectCollection = tfsConfigurationServer.GetTeamProjectCollection(teamProjectCollectionId);
             WorkItemStore workItemStore = tfsTeamProjectCollection.GetService<WorkItemStore>();
             WorkItemDtoCollection workItemDtoCollection = new WorkItemDtoCollection();
-            for (int i = 0; i < workItemIds.Length; i++)
+            foreach (WorkItemSummaryDto workItemSummaryDto in workItems)
             {
-                WorkItem workItem = workItemStore.GetWorkItem(workItemIds[i]);
-                WorkItemDto workItemDto = WorkItemDto.CreateFromWorkItem(workItem, buildNumbers[i]);
+                WorkItem workItem = workItemStore.GetWorkItem(workItemSummaryDto.Id);
+                WorkItemDto workItemDto = WorkItemDto.CreateFromWorkItem(workItem, workItemSummaryDto.AssociatedBuildNumber);
                 workItemDtoCollection.Add(workItemDto);
             }
 
