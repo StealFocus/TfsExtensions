@@ -24,12 +24,13 @@
                 // Each item from "selectedWorkItemIds" is of the form "WorkItemId;TeamBuildDefinitionName" 
                 // e.g. "6;TeamBuildA"
                 string[] valueSplit = selectedWorkItemIds[i].Split(';');
-                workItemSummaries[i] = new WorkItemSummaryDto();
-                workItemSummaries[i].Id = int.Parse(valueSplit[0], CultureInfo.CurrentCulture);
-                workItemSummaries[i].AssociatedBuildNumber = valueSplit[1];
+                WorkItemSummaryDto workItemSummaryDto = new WorkItemSummaryDto();
+                workItemSummaryDto.Id = int.Parse(valueSplit[0], CultureInfo.CurrentCulture);
+                workItemSummaryDto.AssociatedBuildNumber = valueSplit[1];
+                workItemSummaries[i] = workItemSummaryDto;
             }
 
-            WorkItemDtoCollection workItems = ReleaseNotesController.GetTfsConfigurationServer().GetWorkItemsFromTeamBuilds(teamProjectCollectionId, workItemSummaries);
+            IEnumerable<WorkItemDto> workItems = ReleaseNotesController.GetTfsConfigurationServer().GetWorkItemsFromTeamBuilds(teamProjectCollectionId, workItemSummaries);
             return workItems;
         }
 

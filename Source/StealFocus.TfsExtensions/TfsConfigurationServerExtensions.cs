@@ -136,7 +136,7 @@
             return workItemDtoCollection;
         }
 
-        public static WorkItemDtoCollection GetWorkItemsFromTeamBuilds(this TfsConfigurationServer tfsConfigurationServer, Guid teamProjectCollectionId, IEnumerable<WorkItemSummaryDto> workItems)
+        public static IEnumerable<WorkItemDto> GetWorkItemsFromTeamBuilds(this TfsConfigurationServer tfsConfigurationServer, Guid teamProjectCollectionId, IEnumerable<WorkItemSummaryDto> workItems)
         {
             if (tfsConfigurationServer == null)
             {
