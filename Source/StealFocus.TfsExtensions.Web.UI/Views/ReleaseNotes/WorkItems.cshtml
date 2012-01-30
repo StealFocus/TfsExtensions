@@ -12,8 +12,27 @@
 @using (Html.BeginForm())
 {
     <table>
-        <tr><th>
+        <tr>
+            <th>
                 Work Item Title
+            </th>
+            <th>
+                Work Item Type
+            </th>
+            <th>
+                Work Item State
+            </th>
+            <th>
+                Created By
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+                Changed By
+            </th>
+            <th>
+                Changed On
             </th>
             <th>
                 Associated Build Number
@@ -27,6 +46,24 @@
             <tr>
                 <td>
                     @Html.DisplayFor(item => workItemDto.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => workItemDto.TypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => workItemDto.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => workItemDto.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => workItemDto.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => workItemDto.ChangedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => workItemDto.ChangedDate)
                 </td>
                 <td>
                     @Html.DisplayFor(item => workItemDto.AssociatedBuildNumber)
