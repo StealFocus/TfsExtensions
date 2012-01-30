@@ -1,0 +1,43 @@
+﻿@using StealFocus.TfsExtensions.Dto
+@using StealFocus.TfsExtensions.Web.UI.Controllers
+
+@model WorkItemDtoCollection
+
+@{
+    ViewBag.Title = "SelectWorkItems";
+}
+
+<h2>SelectWorkItems</h2>
+
+@using (Html.BeginForm())
+{
+    <table>
+        <tr><th>
+                Work Item Title
+            </th>
+            <th>
+                Associated Build Number
+            </th>
+            <th>
+                Include
+            </th>
+        </tr>
+        @foreach (WorkItemDto workItemDto in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(item => workItemDto.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => workItemDto.AssociatedBuildNumber)
+                </td>
+                <td>
+                    <input type="checkbox" name="@FormCollectionItemName.SelectedWorkItemIds" value="@workItemDto.Id;@workItemDto.AssociatedBuildNumber" />
+                </td>
+            </tr>
+        }
+    </table>
+    <input type="hidden" name="@FormCollectionItemName.TeamProjectCollectionId" value="@ViewData["TeamProjectCollectionId"]" />
+    <input type="hidden" name="@FormCollectionItemName.TeamProjectName" value="@ViewData["TeamProjectName"]" />
+    <input type="submit" />
+}

@@ -9,5 +9,7 @@
         public const string SelectedTeamBuildDefinitions = "SelectedTeamBuildDefinitions";
 
         public const string SelectedTeamBuildUris = "SelectedTeamBuildUris";
+
+        public const string SelectedWorkItemIds = "SelectedWorkItemIds";
     }
 }

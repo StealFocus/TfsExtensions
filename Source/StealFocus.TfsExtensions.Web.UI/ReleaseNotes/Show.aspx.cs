@@ -1,6 +1,7 @@
 ﻿namespace StealFocus.TfsExtensions.Web.UI.ReleaseNotes
 {
     using System;
+    using System.Globalization;
     using System.Web;
     using System.Web.UI;
     using StealFocus.TfsExtensions.Dto;
@@ -13,15 +14,18 @@
             Guid teamProjectCollectionId = new Guid(HttpContext.Current.Request.QueryString[QueryStringKey.TeamProjectCollectionId]);
             
             // string teamProjectName = HttpContext.Current.Request.QueryString[QueryStringKey.TeamProjectName];
-            string selectedTeamBuildUriCommaSeparatedList = HttpContext.Current.Request.QueryString[QueryStringKey.SelectedTeamBuildUris];
-            string[] selectedTeamBuildUris = selectedTeamBuildUriCommaSeparatedList.Split(',');
-            Uri[] selectedTeamBuildUrisList = new Uri[selectedTeamBuildUris.Length];
-            for (int i = 0; i < selectedTeamBuildUris.Length; i++)
+            string selectedWorkItemIdCommaSeparatedList = HttpContext.Current.Request.QueryString[QueryStringKey.SelectedWorkItemIds];
+            string[] selectedWorkItemIds = selectedWorkItemIdCommaSeparatedList.Split(',');
+            int[] workItemIds = new int[selectedWorkItemIds.Length];
+            string[] buildNumbers = new string[selectedWorkItemIds.Length];
+            for (int i = 0; i < selectedWorkItemIds.Length; i++)
             {
-                selectedTeamBuildUrisList[i] = new Uri(selectedTeamBuildUris[i]);
+                string[] valueSplit = selectedWorkItemIds[i].Split(';');
+                workItemIds[i] = int.Parse(valueSplit[0], CultureInfo.CurrentCulture);
+                buildNumbers[i] = valueSplit[1];
             }
 
-            WorkItemDtoCollection workItems = ReleaseNotesController.GetTfsConfigurationServer().GetWorkItems(teamProjectCollectionId, selectedTeamBuildUrisList);
+            WorkItemDtoCollection workItems = ReleaseNotesController.GetTfsConfigurationServer().GetWorkItemsFromTeamBuilds(teamProjectCollectionId, workItemIds, buildNumbers);
             return workItems;
         }
 

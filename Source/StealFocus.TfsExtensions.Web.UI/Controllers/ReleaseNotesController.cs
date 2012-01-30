@@ -1,6 +1,7 @@
 ﻿namespace StealFocus.TfsExtensions.Web.UI.Controllers
 {
     using System;
+    using System.Collections;
     using System.Configuration;
     using System.Globalization;
     using System.Web.Mvc;
@@ -100,11 +101,51 @@
             Guid teamProjectCollectionId = Guid.Parse(formCollection[FormCollectionItemName.TeamProjectCollectionId]);
             string teamProjectName = formCollection[FormCollectionItemName.TeamProjectName];
             string selectedTeamBuildUris = formCollection[FormCollectionItemName.SelectedTeamBuildUris];
-            string redirectUrl = GetReportUrl(teamProjectCollectionId, teamProjectName, selectedTeamBuildUris);
+            RouteValueDictionary routeValueDictionary = new RouteValueDictionary();
+            routeValueDictionary.Add("teamProjectCollectionId", teamProjectCollectionId);
+            routeValueDictionary.Add("teamProjectName", teamProjectName);
+            routeValueDictionary.Add("selectedTeamBuildUris", selectedTeamBuildUris);
+            return RedirectToAction("WorkItems", routeValueDictionary);
+        }
+
+        [HttpGet]
+        public ActionResult WorkItems(Guid teamProjectCollectionId, string teamProjectName, string selectedTeamBuildUris)
+        {
+            if (string.IsNullOrEmpty(selectedTeamBuildUris))
+            {
+                throw new ArgumentNullException("selectedTeamBuildUris");
+            }
+
+            ViewData["TeamProjectCollectionId"] = teamProjectCollectionId;
+            ViewData["TeamProjectName"] = teamProjectName;
+            string[] selectedTeamBuildUrisList = selectedTeamBuildUris.Split(',');
+            ArrayList arrayList = new ArrayList(selectedTeamBuildUrisList.Length);
+            foreach (string selectedTeamBuildUri in selectedTeamBuildUrisList)
+            {
+                arrayList.Add(new Uri(selectedTeamBuildUri));
+            }
+            
+            Uri[] uris = (Uri[])arrayList.ToArray(typeof(Uri));
+            WorkItemDtoCollection workItemsFromTeamBuilds = GetTfsConfigurationServer().GetWorkItemsFromTeamBuilds(teamProjectCollectionId, uris);
+            return View(workItemsFromTeamBuilds);
+        }
+
+        [HttpPost]
+        public ActionResult WorkItems(FormCollection formCollection)
+        {
+            if (formCollection == null)
+            {
+                throw new ArgumentNullException("formCollection");
+            }
+
+            Guid teamProjectCollectionId = Guid.Parse(formCollection[FormCollectionItemName.TeamProjectCollectionId]);
+            string teamProjectName = formCollection[FormCollectionItemName.TeamProjectName];
+            string selectedWorkItemIds = formCollection[FormCollectionItemName.SelectedWorkItemIds];
+            string redirectUrl = GetReportUrl(teamProjectCollectionId, teamProjectName, selectedWorkItemIds);
             return Redirect(redirectUrl);
         }
 
-        private static string GetReportUrl(Guid teamProjectCollectionId, string teamProjectName, string selectedTeamBuildUris)
+        private static string GetReportUrl(Guid teamProjectCollectionId, string teamProjectName, string selectedWorkItemIds)
         {
             return string
                 .Format(
@@ -114,8 +155,8 @@
                     teamProjectCollectionId,
                     QueryStringKey.TeamProjectName,
                     teamProjectName,
-                    QueryStringKey.SelectedTeamBuildUris,
-                    selectedTeamBuildUris);
+                    QueryStringKey.SelectedWorkItemIds,
+                    selectedWorkItemIds);
         }
     }
 }

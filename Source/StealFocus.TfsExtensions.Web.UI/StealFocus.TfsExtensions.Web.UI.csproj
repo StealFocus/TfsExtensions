@@ -176,6 +176,7 @@
     <Content Include="Views\ReleaseNotes\TeamProject.cshtml" />
     <Content Include="Views\ReleaseNotes\TeamBuildDefinitions.cshtml" />
     <Content Include="Views\ReleaseNotes\TeamBuilds.cshtml" />
+    <Content Include="Views\ReleaseNotes\WorkItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -7,5 +7,7 @@
         public const string TeamProjectName = "TeamProjectName";
 
         public const string SelectedTeamBuildUris = "SelectedTeamBuildUris";
+
+        public const string SelectedWorkItemIds = "SelectedWorkItemIds";
     }
 }

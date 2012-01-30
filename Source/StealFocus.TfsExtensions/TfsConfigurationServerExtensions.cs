@@ -101,7 +101,7 @@
             return teamBuildDtoCollection;
         }
 
-        public static WorkItemDtoCollection GetWorkItems(this TfsConfigurationServer tfsConfigurationServer, Guid teamProjectCollectionId, Uri[] teamBuildUris)
+        public static WorkItemDtoCollection GetWorkItemsFromTeamBuilds(this TfsConfigurationServer tfsConfigurationServer, Guid teamProjectCollectionId, Uri[] teamBuildUris)
         {
             if (tfsConfigurationServer == null)
             {
@@ -121,19 +121,7 @@
                     if (!workItems.ContainsKey(workItemSummary.WorkItemId))
                     {
                         WorkItem workItem = workItemStore.GetWorkItem(workItemSummary.WorkItemId);
-                        WorkItemDto workItemDto = new WorkItemDto();
-                        workItemDto.Id = workItem.Id;
-                        workItemDto.ChangedBy = workItem.ChangedBy;
-                        workItemDto.ChangedDate = workItem.ChangedDate;
-                        workItemDto.CreatedBy = workItem.CreatedBy;
-                        workItemDto.CreatedDate = workItem.CreatedDate;
-                        workItemDto.Description = workItem.Description;
-                        workItemDto.Reason = workItem.Reason;
-                        workItemDto.State = workItem.State;
-                        workItemDto.Title = workItem.Title;
-                        workItemDto.Uri = workItem.Uri;
-                        workItemDto.TypeName = workItem.Type.Name;
-                        workItemDto.AssociatedBuildNumber = buildDetail.BuildNumber;
+                        WorkItemDto workItemDto = WorkItemDto.CreateFromWorkItem(workItem, buildDetail.BuildNumber);
                         workItems.Add(workItem.Id, workItemDto);
                     }
                 }
@@ -143,6 +131,36 @@
             foreach (KeyValuePair<int, WorkItemDto> keyValuePair in workItems)
             {
                 workItemDtoCollection.Add(keyValuePair.Value);
+            }
+
+            return workItemDtoCollection;
+        }
+
+        public static WorkItemDtoCollection GetWorkItemsFromTeamBuilds(this TfsConfigurationServer tfsConfigurationServer, Guid teamProjectCollectionId, int[] workItemIds, string[] buildNumbers)
+        {
+            if (tfsConfigurationServer == null)
+            {
+                throw new ArgumentNullException("tfsConfigurationServer");
+            }
+
+            if (buildNumbers == null)
+            {
+                throw new ArgumentNullException("buildNumbers");
+            }
+
+            if (workItemIds == null)
+            {
+                throw new ArgumentNullException("workItemIds");
+            }
+
+            TfsTeamProjectCollection tfsTeamProjectCollection = tfsConfigurationServer.GetTeamProjectCollection(teamProjectCollectionId);
+            WorkItemStore workItemStore = tfsTeamProjectCollection.GetService<WorkItemStore>();
+            WorkItemDtoCollection workItemDtoCollection = new WorkItemDtoCollection();
+            for (int i = 0; i < workItemIds.Length; i++)
+            {
+                WorkItem workItem = workItemStore.GetWorkItem(workItemIds[i]);
+                WorkItemDto workItemDto = WorkItemDto.CreateFromWorkItem(workItem, buildNumbers[i]);
+                workItemDtoCollection.Add(workItemDto);
             }
 
             return workItemDtoCollection;
