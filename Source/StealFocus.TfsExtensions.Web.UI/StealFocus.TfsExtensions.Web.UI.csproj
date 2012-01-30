@@ -82,9 +82,12 @@
     <Reference Include="System.DirectoryServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AppSettingsKey.cs" />
+    <Compile Include="Controllers\ActionName.cs" />
     <Compile Include="Controllers\FormCollectionItemName.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReleaseNotesController.cs" />
+    <Compile Include="Controllers\RouteValueDictionaryKey.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -99,6 +102,7 @@
     <Compile Include="ReleaseNotes\Show.aspx.designer.cs">
       <DependentUpon>Show.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ViewDataKey.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\FxCopCustomDictionary.xml">

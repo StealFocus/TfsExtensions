@@ -10,12 +10,13 @@
     using Microsoft.TeamFoundation.Client;
 
     using StealFocus.TfsExtensions.Dto;
+    using StealFocus.TfsExtensions.Web.UI.Configuration;
 
     public class ReleaseNotesController : Controller
     {
         public static TfsConfigurationServer GetTfsConfigurationServer()
         {
-            string tfsUrlAppSetting = ConfigurationManager.AppSettings["TfsUrl"];
+            string tfsUrlAppSetting = ConfigurationManager.AppSettings[AppSettingsKey.TfsUrl];
             Uri tfsUri;
             if (string.IsNullOrEmpty(tfsUrlAppSetting))
             {
@@ -26,14 +27,14 @@
                 tfsUri = new Uri(tfsUrlAppSetting);
             }
 
-            string username = ConfigurationManager.AppSettings["TfsUsername"];
+            string username = ConfigurationManager.AppSettings[AppSettingsKey.TfsUserName];
             if (string.IsNullOrEmpty(username))
             {
                 return TfsConfigurationServerFactoryExtensions.GetConfigurationServerAndAuthenticate(tfsUri);
             }
 
-            string domain = ConfigurationManager.AppSettings["TfsUserDomain"];
-            string password = ConfigurationManager.AppSettings["TfsUserPassword"];
+            string domain = ConfigurationManager.AppSettings[AppSettingsKey.TfsUserDomain];
+            string password = ConfigurationManager.AppSettings[AppSettingsKey.TfsUserPassword];
             return TfsConfigurationServerFactoryExtensions.GetConfigurationServerAndAuthenticate(tfsUri, domain, username, password);
         }
 
@@ -52,8 +53,8 @@
         public ActionResult TeamBuildDefinitions(Guid teamProjectCollectionId, string teamProjectName)
         {
             BuildDefinitionDtoCollection buildDefinitionDtoCollection = GetTfsConfigurationServer().GetBuildDefinitions(teamProjectCollectionId, teamProjectName);
-            ViewData["TeamProjectCollectionId"] = teamProjectCollectionId;
-            ViewData["TeamProjectName"] = teamProjectName;
+            ViewData[ViewDataKey.TeamProjectCollectionId] = teamProjectCollectionId;
+            ViewData[ViewDataKey.TeamProjectName] = teamProjectName;
             return View(buildDefinitionDtoCollection);
         }
 
@@ -69,10 +70,10 @@
             string teamProjectName = formCollection[FormCollectionItemName.TeamProjectName];
             string selectedTeamBuildDefinitions = formCollection[FormCollectionItemName.SelectedTeamBuildDefinitions];
             RouteValueDictionary routeValueDictionary = new RouteValueDictionary();
-            routeValueDictionary.Add("teamProjectCollectionId", teamProjectCollectionId);
-            routeValueDictionary.Add("teamProjectName", teamProjectName);
-            routeValueDictionary.Add("selectedTeamBuildDefinitions", selectedTeamBuildDefinitions);
-            return RedirectToAction("TeamBuilds", routeValueDictionary);
+            routeValueDictionary.Add(RouteValueDictionaryKey.TeamProjectCollectionId, teamProjectCollectionId);
+            routeValueDictionary.Add(RouteValueDictionaryKey.TeamProjectName, teamProjectName);
+            routeValueDictionary.Add(RouteValueDictionaryKey.SelectedTeamBuildDefinitions, selectedTeamBuildDefinitions);
+            return RedirectToAction(ActionName.TeamBuilds, routeValueDictionary);
         }
 
         [HttpGet]
@@ -83,8 +84,8 @@
                 throw new ArgumentNullException("selectedTeamBuildDefinitions");
             }
 
-            ViewData["TeamProjectCollectionId"] = teamProjectCollectionId;
-            ViewData["TeamProjectName"] = teamProjectName;
+            ViewData[ViewDataKey.TeamProjectCollectionId] = teamProjectCollectionId;
+            ViewData[ViewDataKey.TeamProjectName] = teamProjectName;
             string[] selectedTeamBuildDefinitionsList = selectedTeamBuildDefinitions.Split(',');
             TeamBuildDtoCollection teamBuildDtoCollection = GetTfsConfigurationServer().GetTeamBuilds(teamProjectCollectionId, teamProjectName, selectedTeamBuildDefinitionsList);
             return View(teamBuildDtoCollection);
@@ -101,9 +102,9 @@
             Guid teamProjectCollectionId = Guid.Parse(formCollection[FormCollectionItemName.TeamProjectCollectionId]);
             string selectedTeamBuildUris = formCollection[FormCollectionItemName.SelectedTeamBuildUris];
             RouteValueDictionary routeValueDictionary = new RouteValueDictionary();
-            routeValueDictionary.Add("teamProjectCollectionId", teamProjectCollectionId);
-            routeValueDictionary.Add("selectedTeamBuildUris", selectedTeamBuildUris);
-            return RedirectToAction("WorkItems", routeValueDictionary);
+            routeValueDictionary.Add(RouteValueDictionaryKey.TeamProjectCollectionId, teamProjectCollectionId);
+            routeValueDictionary.Add(RouteValueDictionaryKey.SelectedTeamBuildUris, selectedTeamBuildUris);
+            return RedirectToAction(ActionName.WorkItems, routeValueDictionary);
         }
 
         [HttpGet]
@@ -114,7 +115,7 @@
                 throw new ArgumentNullException("selectedTeamBuildUris");
             }
 
-            ViewData["TeamProjectCollectionId"] = teamProjectCollectionId;
+            ViewData[ViewDataKey.TeamProjectCollectionId] = teamProjectCollectionId;
             string[] selectedTeamBuildUrisList = selectedTeamBuildUris.Split(',');
             ArrayList arrayList = new ArrayList(selectedTeamBuildUrisList.Length);
             foreach (string selectedTeamBuildUri in selectedTeamBuildUrisList)

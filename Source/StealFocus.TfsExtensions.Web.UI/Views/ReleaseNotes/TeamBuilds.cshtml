@@ -1,5 +1,6 @@
 ﻿@using StealFocus.TfsExtensions.Dto
 @using StealFocus.TfsExtensions.Web.UI.Controllers
+@using StealFocus.TfsExtensions.Web.UI
 
 @model TeamBuildDtoCollection
 
@@ -37,7 +38,7 @@
             </tr>
         }
     </table>
-    <input type="hidden" name="@FormCollectionItemName.TeamProjectCollectionId" value="@ViewData["TeamProjectCollectionId"]" />
+    <input type="hidden" name="@FormCollectionItemName.TeamProjectCollectionId" value="@ViewData[ViewDataKey.TeamProjectCollectionId]" />
     <br />
     <input type="submit" value="Submit" />
 }
