@@ -12,12 +12,12 @@
         {
             ViewBag.Message = "Welcome to ASP.NET MVC!";
 
-            return View();
+            return this.View();
         }
 
         public ActionResult About()
         {
-            return View();
+            return this.View();
         }
     }
 }
