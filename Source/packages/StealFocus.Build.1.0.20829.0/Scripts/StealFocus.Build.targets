@@ -21,16 +21,13 @@
     <MSDeployVersion>2.1</MSDeployVersion>
   </PropertyGroup>
 
+  <!-- To Do: Issue here as 'VisualStudioVersion' is a reserved property and defaults to '10.0' (for VS2010). -->
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' ">
     <VisualStudioVersion>2010</VisualStudioVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(MSTestVersion)' == '' ">
-    <MSTestVersion>$(VisualStudioVersion)</MSTestVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(InstallNuGetPackages)' == '' ">
-    <InstallNuGetPackages>false</InstallNuGetPackages>
+    <MSTestVersion>2010</MSTestVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(MaxBuildTimeInMinutes)'=='' ">
@@ -43,7 +40,7 @@
     <DeleteMSTestResultsDirectory>false</DeleteMSTestResultsDirectory>
     <ForceInitialiseEnvironment>false</ForceInitialiseEnvironment>
     <IsInitialiseEnvironmentBuild>true</IsInitialiseEnvironmentBuild>
-    <IsEnvironmentDeployBuild>true</IsEnvironmentDeployBuild>
+    <IsEnvironmentDeployBuild>false</IsEnvironmentDeployBuild>
     <StartTimeStamp>$([System.DateTime]::Now.ToString("yyyy/MM/dd HH:mm:ss"))</StartTimeStamp>
     <StateFilePath>.\StealFocus.Build.state</StateFilePath>
   </PropertyGroup>
@@ -250,12 +247,6 @@
     <Error
       Condition=" '%(EventLogSource.EventLogName)'=='' And '%(EventLogSource.Identity)'!='' "
       Text="When configuring 'EventLogSource' ItemGroups, you must supply 'EventLogName' metadata." />
-    <Error
-      Condition=" '$(InstallNuGetPackages)'=='true' And '$(NuGetDotExePath)'=='' "
-      Text="When specifying 'InstallNuGetPackages' as true, you must supply a property for 'NuGetDotExePath' (NuGet.exe can be downloaded from http://nuget.codeplex.com/releases/view/58939)." />
-    <Error
-      Condition=" '$(InstallNuGetPackages)'=='true' And '%(NuGetPackage.Identity)'=='' "
-      Text="When specifying 'InstallNuGetPackages' as true, you must supply an Item Group for 'NuGetPackage' (where the Includes point to 'packages.config' locations)." />
     <Message
       Importance="high"
       Text="...complete." />
@@ -288,9 +279,6 @@
       Text="'ForceInitialiseEnvironment' is '$(ForceInitialiseEnvironment)'." />
     <Message
       Importance="high"
-      Text="'InstallNuGetPackages' is '$(InstallNuGetPackages)'." />
-    <Message
-      Importance="high"
       Text="'IisVersion' is '$(IisVersion)'." />
     <Message
       Importance="high"
@@ -319,10 +307,6 @@
     <Message
       Importance="high"
       Text="'MSTestVersion' is '$(MSTestVersion)'." />
-    <Message
-      Condition=" '$(InstallNuGetPackages)'=='true' "
-      Importance="high"
-      Text="'NuGetDotExePath' is '$(NuGetDotExePath)'." />
     <Message
       Importance="high"
       Text="'SdkPath' is '$(SdkPath)'." />
@@ -471,22 +455,6 @@
     <CallTarget
       Condition=" '$(CreateStateFile)'=='true' "
       Targets="CreateStateFile" />
-    <Message
-      Condition=" '$(InstallNuGetPackages)'=='true' "
-      Text="Installing NuGet packages specified in the following files:" />
-    <Message
-      Condition=" '$(InstallNuGetPackages)'=='true' And '%(NuGetPackage.Identity)'!='' "
-      Text="- %(NuGetPackage.FullPath)" />
-    <Message
-      Condition=" '$(InstallNuGetPackages)'=='true' And '%(NuGetPackage.Identity)'=='' "
-      Text="- (None configured)" />
-    <!-- "path1\NuGet.exe" install "path2\packages.config" -->
-    <!--
-    Waiting for NuGet fix (not playing nicely with internet proxies).
-    <Exec
-      Condition=" '$(InstallNuGetPackages)'=='true' "
-      Command="%22$(NuGetDotExePath)%22 install %22%(NuGetPackage.FullPath)%22" />
-    -->
   </Target>
 
   <Target Name="AfterInitialiseEnvironmentCustom">
@@ -515,60 +483,33 @@
     <!-- To be overridden in inheriting script. -->
   </Target>
 
-  <Target Name="CleanMSDeployArchiveXml">
-    <MSBuild.ExtensionPack.Xml.XmlFile
-      TaskAction="ReadElementXml"
-      File="$(WebPackageArchiveXmlFilePath)"
-      XPath="/sitemanifest/appHostConfig/relativeLocation/section[@name='system.webServer/httpErrors']">
-      <Output
-        TaskParameter="Value"
-        PropertyName="HttpErrorsSectionXmlContent"/>
-    </MSBuild.ExtensionPack.Xml.XmlFile>
-    <MSBuild.ExtensionPack.Xml.XmlFile
-      Condition=" '$(HttpErrorsSectionXmlContent)'!='' "
-      ContinueOnError="true"
-      TaskAction="RemoveElement"
-      File="$(WebPackageArchiveXmlFilePath)"
-      Element="httpErrors"
-      ParentElement="/sitemanifest/appHostConfig/relativeLocation/section[@name='system.webServer/httpErrors']" />
-  </Target>
-
   <Target Name="CorePackageWebProjectsForConfiguration">
+    <!-- To Do: "IntermediateOutputPath" instead of "_PackageTempDir"? -->
     <!-- Package with delay signing (it's a desktop build). -->
     <MSBuild
       Condition=" '$(IsDesktopBuild)'=='true' And '%(WebProject.Package)'=='true' "
       Projects="%(WebProject.Identity)"
-      Properties="Configuration=$(Configuration);OutputPath=$(OutputPath);PackageAsSingleFile=%(WebProject.PackageAsSingleFile);_PackageTempDir=%(WebProject.PackageTempDir);IncludeIisSettings=%(WebProject.IncludeIisSettings);IncludeAppPool=%(WebProject.IncludeAppPool);DeployEncryptKey=%(WebProject.DeployEncryptKey);$(Properties);$(CustomPropertiesForBuild)"
+      Properties="Configuration=$(Configuration);OutputPath=$(OutputPath);PackageAsSingleFile=%(WebProject.PackageAsSingleFile);PackageLocation=$(OutputPath)\_PublishedWebsites\%(WebProject.PackageName);_PackageTempDir=%(WebProject.PackageTempDir);IncludeIisSettings=%(WebProject.IncludeIisSettings);IncludeAppPool=%(WebProject.IncludeAppPool);DeployEncryptKey=%(WebProject.DeployEncryptKey);$(Properties);$(CustomPropertiesForBuild)"
       Targets="Package" />
     <!-- Package with full signing (it's a server build). -->
     <MSBuild
       Condition=" '$(IsDesktopBuild)'!='true' And '%(WebProject.Package)'=='true' "
       Projects="%(WebProject.Identity)"
-      Properties="Configuration=$(Configuration);OutputPath=$(OutputPath);PackageAsSingleFile=%(WebProject.PackageAsSingleFile);_PackageTempDir=%(WebProject.PackageTempDir);IncludeIisSettings=%(WebProject.IncludeIisSettings);IncludeAppPool=%(WebProject.IncludeAppPool);DeployEncryptKey=%(WebProject.DeployEncryptKey);$(Properties);$(CustomPropertiesForBuild);DelaySign=false;AssemblyOriginatorKeyFile=$(StrongNameKeyPairPath)"
+      Properties="Configuration=$(Configuration);OutputPath=$(OutputPath);PackageAsSingleFile=%(WebProject.PackageAsSingleFile);PackageLocation=$(OutputPath)\_PublishedWebsites\%(WebProject.PackageName);_PackageTempDir=%(WebProject.PackageTempDir);IncludeIisSettings=%(WebProject.IncludeIisSettings);IncludeAppPool=%(WebProject.IncludeAppPool);DeployEncryptKey=%(WebProject.DeployEncryptKey);$(Properties);$(CustomPropertiesForBuild);DelaySign=false;AssemblyOriginatorKeyFile=$(StrongNameKeyPairPath)"
       Targets="Package" />
-    <!-- 
-      Remove the "system.webServer/httpErrors" section from the manifest (when it exists) as this causes an error in MSDeploy (it 
-      seems this is a known issue with MSDeploy). The "system.webServer/httpErrors" section takes the default values anyway.
-    -->
-    <ItemGroup>
-      <WebPackageArchiveXmlFile Include="$(BuildDirectoryPath)\**\*_Package\Archive\archive.xml" />
-    </ItemGroup>
-    <Message
-      Importance="high"
-      Text="Removing 'system.webServer/httpErrors' section from the following MSDeploy packages as the presence of this section can cause a fatal error in some scenarios (this is know issue with MSDeploy)." />
-    <Message
-      Condition=" '%(WebPackageArchiveXmlFile.Identity)'!='' "
-      Importance="high"
-      Text="- %(WebPackageArchiveXmlFile.FullPath)" />
-    <Message
-      Condition=" '%(WebPackageArchiveXmlFile.Identity)'=='' "
-      Importance="high"
-      Text="- (None found)" />
+    <!-- Clean-up the MSDeploy XML. -->
+    <CallTarget Targets="CleanArchiveXmlFiles" />
+    <!-- Add the AppPool credentials as parameters to the MSDeploy package(s). -->
     <MSBuild
-      Condition=" '%(WebPackageArchiveXmlFile.Identity)'!='' "
+      Condition=" '%(WebProject.Package)'=='true' "
       Projects="$(MSBuildProjectFile)"
-      Targets="CleanMSDeployArchiveXml"
-      Properties="WebPackageArchiveXmlFilePath=%(WebPackageArchiveXmlFile.FullPath)" />
+      Properties="ParametersXmlFilePath=$(BuildDirectoryPath)\$(Configuration)\_PublishedWebsites\%(WebProject.PackageName)\Archive\parameters.xml"
+      Targets="AddAppPoolCredentialsToParametersFile" />
+    <MSBuild
+      Condition=" '%(WebProject.Package)'=='true' "
+      Projects="$(MSBuildProjectFile)"
+      Properties="SetParametersXmlFilePath=$(BuildDirectoryPath)\$(Configuration)\_PublishedWebsites\%(WebProject.PackageName)\Archive.SetParameters.xml"
+      Targets="AddAppPoolCredentialsParametersToSetParametersFile" />
     <!-- Delete the 'PackageTempDir' so we don't leave artefacts on the file system. -->
     <RemoveDir
       Condition=" '%(WebProject.Package)'=='true' And Exists('%(WebProject.PackageTempDir)') "
@@ -1256,7 +1197,7 @@
       Text="The build took $(BuildTimeInMinutes) minutes." />
     <Error 
       Condition=" '$(BuildOverran)'=='True' " 
-      Text="The build took $(BuildTimeInMinutes) minutes which is longer than the configured allowed length of $(MaxBuildTimeInMinutes) minute(s)." />
+      Text="The build took $(BuildTimeInMinutes) minutes which is longer than the configured allowed length of $(MaxBuildTimeInMinutes) minute(s). If you wish for the build to be able to run longer without failing, please set a 'MaxBuildTimeInMinutes' property." />
   </Target>
 
   <Target Name="EnvironmentDeploy" DependsOnTargets="$(EnvironmentDeployDependsOn)" />

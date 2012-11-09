@@ -18,7 +18,7 @@
     <StyleCopTargetsFilePath>$(MSBuildExtensionsPath)\StyleCop\v$(StyleCopVersion)\StyleCop.targets</StyleCopTargetsFilePath>
   </PropertyGroup>
 
-  <Target Name="FixStyleCopOn64Bit" Condition=" '$(Is64bitOS)'=='true' And ( '$(StyleCopVersion)'=='4.4' Or '$(StyleCopVersion)'=='4.5' ) ">
+  <Target Name="FixStyleCopOn64Bit" Condition=" '$(Is64bitOS)'=='true' And ( '$(StyleCopVersion)'=='4.4' Or '$(StyleCopVersion)'=='4.5' Or '$(StyleCopVersion)'=='4.6' Or '$(StyleCopVersion)'=='4.7' ) ">
     <PropertyGroup>
       <StyleCopTargetsBackupPath>$(StyleCopTargetsFilePath).bak</StyleCopTargetsBackupPath>
     </PropertyGroup>

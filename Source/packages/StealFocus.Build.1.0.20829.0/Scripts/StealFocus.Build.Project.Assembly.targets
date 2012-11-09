@@ -81,8 +81,11 @@
         TaskParameter="Lines"
         ItemName="ItemsFromFile" />
     </ReadLinesFromFile>
+    <PropertyGroup Condition=" '$(AssemblyInfoCommonRegex)'=='' ">
+      <AssemblyInfoCommonRegex>\[assembly: AssemblyConfiguration\(&quot;$(BuildLabel) $(Configuration)&quot;\)\]</AssemblyInfoCommonRegex>
+    </PropertyGroup>
     <CreateProperty
-      Condition=" '$([System.Text.RegularExpressions.Regex]::Match(%(ItemsFromFile.Identity), `\[assembly: AssemblyConfiguration\(&quot;$(BuildLabel) $(Configuration)&quot;\)\]`))'!='' "
+      Condition=" '$([System.Text.RegularExpressions.Regex]::Match(%(ItemsFromFile.Identity), `$(AssemblyInfoCommonRegex)`))'!='' "
       Value="true">
       <Output
         TaskParameter="Value"

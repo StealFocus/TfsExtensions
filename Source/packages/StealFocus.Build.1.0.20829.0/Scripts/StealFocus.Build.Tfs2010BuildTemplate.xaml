@@ -283,7 +283,7 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:BuildName={3} {4}&quot;, BranchName, VersionNumber, BinariesDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="200,22" LogFile="Beazley.Tasks.Build.InitialiseAndCodeGen.log" LogFileDropLocation="[BuildDetail.DropLocation + &quot;\logs&quot;]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;InitialiseBuild&quot;, &quot;InitialiseEnvironment&quot;, &quot;CodeGeneration&quot;}]" />
+        <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:BuildName={3} {4}&quot;, BranchName, VersionNumber, BinariesDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="200,22" LogFile="StealFocus.Build.InitialiseAndCodeGen.log" LogFileDropLocation="[BuildDetail.DropLocation + &quot;\logs&quot;]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;InitialiseBuild&quot;, &quot;InitialiseEnvironment&quot;, &quot;CodeGeneration&quot;}]" />
       </Sequence>
       <TryCatch DisplayName="Try Compile, Test, and Associate Changesets and Work Items" sap:VirtualizedContainerService.HintSize="1928,5494" mtbwt:BuildTrackingParticipant.Importance="Low">
         <TryCatch.Finally>
@@ -379,7 +379,15 @@
                                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                             </scg:Dictionary>
                                           </sap:WorkflowViewStateService.ViewState>
-                                          <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:OutputPath={3} /p:BuildName={4} {5}&quot;, BranchName, VersionNumber, BinariesDirectory, outputDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" Configuration="[platformConfiguration.Configuration]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="200,22" LogFile="Beazley.Tasks.Build.PackageAndPublish.log" LogFileDropLocation="[logFileDropLocation]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;CorePackageWebProjectsForConfiguration&quot;, &quot;CorePackageSharePointProjectsForConfiguration&quot;, &quot;CorePublishAzureProjectsForConfiguration&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
+                                          <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:OutputPath={3} /p:BuildName={4} {5}&quot;, BranchName, VersionNumber, BinariesDirectory, outputDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" Configuration="[platformConfiguration.Configuration]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="200,22" LogFile="StealFocus.Build.PackageAndPublish.log" LogFileDropLocation="[logFileDropLocation]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;CorePackageWebProjectsForConfiguration&quot;, &quot;CorePackageSharePointProjectsForConfiguration&quot;, &quot;CorePublishAzureProjectsForConfiguration&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
+                                        </Sequence>
+                                        <Sequence DisplayName="Deploy For Test (Steal Focus Build)" sap:VirtualizedContainerService.HintSize="222,146">
+                                          <sap:WorkflowViewStateService.ViewState>
+                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                            </scg:Dictionary>
+                                          </sap:WorkflowViewStateService.ViewState>
+                                          <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:OutputPath={3} /p:BuildName={4} {5}&quot;, BranchName, VersionNumber, BinariesDirectory, outputDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" Configuration="[platformConfiguration.Configuration]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="200,22" LogFile="StealFocus.Build.DeployForTest.log" LogFileDropLocation="[logFileDropLocation]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;DeployForTest&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
                                         </Sequence>
                                       </Sequence>
                                     </TryCatch.Try>
@@ -589,7 +597,7 @@
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:BuildName={3} {4}&quot;, BranchName, VersionNumber, BinariesDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="200,22" LogFile="Beazley.Tasks.Build.PackageAndBuildDocumentation.log" LogFileDropLocation="[BuildDetail.DropLocation + &quot;\logs&quot;]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;Package&quot;, &quot;BuildDocumentation&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
+              <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:BuildName={3} {4}&quot;, BranchName, VersionNumber, BinariesDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="200,22" LogFile="StealFocus.Build.PackageAndBuildDocumentation.log" LogFileDropLocation="[BuildDetail.DropLocation + &quot;\logs&quot;]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;Package&quot;, &quot;BuildDocumentation&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
             </Sequence>
             <Parallel DisplayName="Get Impacted Tests, Index Sources and Publish Symbols" sap:VirtualizedContainerService.HintSize="1888,1177">
               <If Condition="[PerformTestImpactAnalysis]" DisplayName="If PerformTestImpactAnalysis" sap:VirtualizedContainerService.HintSize="464,1131" mtbwt:BuildTrackingParticipant.Importance="Low">
@@ -669,21 +677,17 @@
                 </If.Then>
               </If>
             </Parallel>
+            <Sequence DisplayName="Environment Deploy (Steal Focus Build)" sap:VirtualizedContainerService.HintSize="1928,325">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:BuildName={3} /p:IsEnvironmentDeployBuild=true {4}&quot;, BranchName, VersionNumber, BinariesDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="269,100" LogFile="StealFocus.Build.EnvironmentDeploy.log" LogFileDropLocation="[BuildDetail.DropLocation + &quot;\logs&quot;]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;EnvironmentDeploy&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
+            </Sequence>
           </Sequence>
         </TryCatch.Try>
       </TryCatch>
-      <Sequence DisplayName="Environment Deploy (Steal Focus Build)" sap:VirtualizedContainerService.HintSize="1928,325">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <If Condition="[Not (BuildDetail.Reason = Microsoft.TeamFoundation.Build.Client.BuildReason.ValidateShelveset)]" DisplayName="If BuildReason is not Gated Check-in" sap:VirtualizedContainerService.HintSize="464,201">
-          <If.Then>
-            <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:IsDesktopBuild=false /p:BranchName={0} /p:VersionNumber={1} /p:BuildDirectoryPath={2} /p:BuildName={3} {4}&quot;, BranchName, VersionNumber, BinariesDirectory, BuildDetail.BuildDefinition.Name, MSBuildArguments)]" DisplayName="MSBuild" sap:VirtualizedContainerService.HintSize="269,100" LogFile="Beazley.Tasks.Build.EnvironmentDeploy.log" LogFileDropLocation="[BuildDetail.DropLocation + &quot;\logs&quot;]" MaxProcesses="[MSBuildMaxProcesses]" Project="[SourcesDirectory + &quot;\&quot; + BuildFilePath]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" Targets="[New String() {&quot;EnvironmentDeploy&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
-          </If.Then>
-        </If>
-      </Sequence>
     </mtbwa:AgentScope>
     <mtbwa:InvokeForReason DisplayName="Check In Gated Changes for CheckInShelveset Builds" sap:VirtualizedContainerService.HintSize="1950,146" Reason="CheckInShelveset">
       <mtbwa:CheckInGatedChanges DisplayName="Check In Gated Changes" sap:VirtualizedContainerService.HintSize="200,22" />

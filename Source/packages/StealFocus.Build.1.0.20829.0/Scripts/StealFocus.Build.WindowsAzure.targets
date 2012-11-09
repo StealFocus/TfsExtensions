@@ -59,7 +59,7 @@
       Condition=" '$(DeployForTestStage)'=='' "
       Text="Please supply a 'DeployForTestStage' property." />
     <CreateProperty
-      Condition=" ( '%(AzurePublishAction.DeployForTest)'=='true' And '$(DeployForTestStage)'=='true' ) Or ( '%(AzurePublishAction.RequiredBranchName)'=='$(BranchName)' And '$(DeployForTestStage)'=='false' ) "
+      Condition=" ( '%(AzurePublishAction.DeployForTest)'=='true' And '$(DeployForTestStage)'=='true' ) Or ( '%(AzurePublishAction.RequiredBranchName)'=='$(BranchName)' And ( '$(BuildName)'=='%(AzurePublishAction.RequiredBuildName)' Or ''=='%(AzurePublishAction.RequiredBuildName)' ) And '$(DeployForTestStage)'=='false' ) "
       Value="true">
       <Output
         TaskParameter="Value"
@@ -76,7 +76,7 @@
       Command="powershell -ExecutionPolicy Unrestricted -NonInteractive -File $(MSBuildThisFileDirectory)\StealFocus.Build.WindowsAzure.PublishAzurePackage.ps1 -currentDirectory $(MSBuildThisFileDirectory) -subscriptionId %22$(AzureSubscriptionId)%22 -managementCertificateThumbprint %22$(AzureManagementCertificateThumbprint)%22 -affinityGroupName %22%(AzurePublishAction.AffinityGroupName)%22 -hostedServiceName %22%(AzurePublishAction.HostedServiceName)%22 -hostedServiceLabel %22%(AzurePublishAction.HostedServiceLabel)%22 -storageAccountName %22%(AzurePublishAction.StorageAccountName)%22 -packageFilePath %22%(AzurePublishAction.PackageFilePath)%22 -configurationFilePath %22%(AzurePublishAction.ConfigurationFilePath)%22 -deploymentLabel %22%(AzurePublishAction.DeploymentLabel)%22 -removeStagingEnvironmentAfterwards %(AzurePublishAction.RemoveStagingEnvironmentAfterwards) -promoteToProductionEnvironment %(AzurePublishAction.PromoteToProductionEnvironment)"
       WorkingDirectory="." />
     <Exec
-      Condition=" '%(AzurePublishAction.RequiredBranchName)'=='$(BranchName)' And '$(DeployForTestStage)'=='false' "
+      Condition=" '%(AzurePublishAction.RequiredBranchName)'=='$(BranchName)' And ( '$(BuildName)'=='%(AzurePublishAction.RequiredBuildName)' Or ''=='%(AzurePublishAction.RequiredBuildName)' ) And '$(DeployForTestStage)'=='false' "
       Command="powershell -ExecutionPolicy Unrestricted -NonInteractive -File $(MSBuildThisFileDirectory)\StealFocus.Build.WindowsAzure.PublishAzurePackage.ps1 -currentDirectory $(MSBuildThisFileDirectory) -subscriptionId %22$(AzureSubscriptionId)%22 -managementCertificateThumbprint %22$(AzureManagementCertificateThumbprint)%22 -affinityGroupName %22%(AzurePublishAction.AffinityGroupName)%22 -hostedServiceName %22%(AzurePublishAction.HostedServiceName)%22 -hostedServiceLabel %22%(AzurePublishAction.HostedServiceLabel)%22 -storageAccountName %22%(AzurePublishAction.StorageAccountName)%22 -packageFilePath %22%(AzurePublishAction.PackageFilePath)%22 -configurationFilePath %22%(AzurePublishAction.ConfigurationFilePath)%22 -deploymentLabel %22%(AzurePublishAction.DeploymentLabel)%22 -removeStagingEnvironmentAfterwards %(AzurePublishAction.RemoveStagingEnvironmentAfterwards) -promoteToProductionEnvironment %(AzurePublishAction.PromoteToProductionEnvironment)"
       WorkingDirectory="." />
   </Target>

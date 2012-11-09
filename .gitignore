@@ -32,5 +32,4 @@ Thumbs.db
 StealFocus.Build.state
 !Source/.nuget/NuGet.exe
 !ReleaseNotes
-Source/packages/
 AssemblyInfoCommon.g.cs
