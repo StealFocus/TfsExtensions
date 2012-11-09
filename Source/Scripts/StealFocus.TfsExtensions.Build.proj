@@ -104,19 +104,19 @@
 
   <ItemGroup>
     <!-- Add "WebApplicationPool" items as required. These will create AppPools in IIS with the provided settings. -->
-    <!--<WebApplicationPool Include="StealFocus.TfsExtensions.Web.UI">
-      --><!-- IdentityType = LocalSystem | LocalService | NetworkService | SpecificUser --><!--
-      <IdentityType>NetworkService</IdentityType>
-      --><!-- Enter the user credentials below when choosing 'SpecificUser' as the 'IdentityType'. --><!--
+    <WebApplicationPool Include="StealFocus.TfsExtensions.Web.UI">
+      <!-- IdentityType = LocalSystem | LocalService | NetworkService | SpecificUser -->
+      <IdentityType>ApplicationPoolIdentity</IdentityType>
+      <!-- Enter the user credentials below when choosing 'SpecificUser' as the 'IdentityType'. -->
       <Domain></Domain>
       <Username></Username>
       <Password></Password>
-      --><!-- ManagedRuntimeVersion = v2.0 | v4.0 --><!--
+      <!-- ManagedRuntimeVersion = v2.0 | v4.0 -->
       <ManagedRuntimeVersion>v4.0</ManagedRuntimeVersion>
-      --><!-- PipelineMode = Integrated | Classic --><!--
+      <!-- PipelineMode = Integrated | Classic -->
       <PipelineMode>Integrated</PipelineMode>
-      <Enable32BitAppOnWin64>false</Enable32BitAppOnWin64>
-    </WebApplicationPool>-->
+      <Enable32BitAppOnWin64>true</Enable32BitAppOnWin64>
+    </WebApplicationPool>
   </ItemGroup>
 
   <ItemGroup>
@@ -148,7 +148,7 @@
     <WebApplication Include="$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI">
       <Name>StealFocus.TfsExtensions.Web.UI</Name>
       <WebSiteName>Default Web Site</WebSiteName>
-      <WebApplicationPoolName>ASP.NET v4.0</WebApplicationPoolName>
+      <WebApplicationPoolName>StealFocus.TfsExtensions.Web.UI</WebApplicationPoolName>
       <AnonymousAuthentication>false</AnonymousAuthentication>
       <BasicAuthentication>false</BasicAuthentication>
       <DigestAuthentication>false</DigestAuthentication>
