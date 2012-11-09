@@ -52,14 +52,15 @@
     <Reference Include="Microsoft.TeamFoundation.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Build\Client\BuildServerFacade.cs" />
     <Compile Include="Dto\BuildDefinitionDto.cs" />
     <Compile Include="Dto\BuildDefinitionDtoCollection.cs" />
     <Compile Include="Dto\TeamBuildDto.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="TfsConfigurationServerExtensions.cs" />
     <Compile Include="TfsConfigurationServerFactoryExtensions.cs" />
     <Compile Include="TfsCredentialsProvider.cs" />
+    <Compile Include="Workflow\Activities\UpdateBuildNumber.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\FxCopCustomDictionary.xml">
