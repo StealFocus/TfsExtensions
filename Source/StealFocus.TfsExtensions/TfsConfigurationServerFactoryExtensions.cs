@@ -1,19 +1,16 @@
 ﻿namespace StealFocus.TfsExtensions
 {
     using System;
+    using System.Net;
+
     using Microsoft.TeamFoundation.Client;
 
     public static class TfsConfigurationServerFactoryExtensions
     {
         public static TfsConfigurationServer GetConfigurationServerAndAuthenticate(Uri tfsUrl, string domain, string userName, string password)
         {
-            TfsCredentialsProvider tfsCredentialsProvider = new TfsCredentialsProvider(userName, domain, password);
-            return GetConfigurationServerAndAuthenticate(tfsUrl, tfsCredentialsProvider);
-        }
-
-        public static TfsConfigurationServer GetConfigurationServerAndAuthenticate(Uri tfsUrl, ICredentialsProvider tfsCredentialsProvider)
-        {
-            TfsConfigurationServer tfsConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(tfsUrl, tfsCredentialsProvider);
+            TfsConfigurationServer tfsConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(tfsUrl);
+            tfsConfigurationServer.Credentials = new NetworkCredential(userName, password, domain);
             tfsConfigurationServer.Authenticate();
             return tfsConfigurationServer;
         }
