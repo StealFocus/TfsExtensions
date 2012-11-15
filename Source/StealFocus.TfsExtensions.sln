@@ -1,8 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StealFocus.TfsExtensions", "StealFocus.TfsExtensions\StealFocus.TfsExtensions.csproj", "{6501C58D-08C6-4AB2-82D4-D0C27B2CE52A}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{749F2B0A-8480-4A23-8601-5CA50FA86B80}"
 	ProjectSection(SolutionItems) = preProject
 		FxCopCustomDictionary.xml = FxCopCustomDictionary.xml
@@ -39,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E3353C
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StealFocus.TfsExtensions", "StealFocus.TfsExtensions\StealFocus.TfsExtensions.csproj", "{6501C58D-08C6-4AB2-82D4-D0C27B2CE52A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StealFocus.TfsExtensions.Tests", "StealFocus.TfsExtensions.Tests\StealFocus.TfsExtensions.Tests.csproj", "{DC9CB307-5AA4-49FD-94EF-BC5B2073737D}"
 EndProject

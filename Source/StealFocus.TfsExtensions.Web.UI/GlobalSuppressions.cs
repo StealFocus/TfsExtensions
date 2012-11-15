@@ -21,3 +21,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Scope = "member", Target = "StealFocus.TfsExtensions.Web.UI.MvcApplication.#Application_Start()")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "StealFocus.TfsExtensions.Web.UI.ReleaseNotes.Show.#GetSelected()")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "StealFocus.TfsExtensions.Web.UI.Controllers.ReleaseNotesController.#GetTfsConfigurationServer()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "sm", Scope = "member", Target = "StealFocus.TfsExtensions.Web.UI.ReleaseNotes.Show.#smScriptManager")]
