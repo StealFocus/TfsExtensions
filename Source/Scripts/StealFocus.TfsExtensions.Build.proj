@@ -279,6 +279,10 @@
 
   <Target Name="AfterPackageCustom">
     <!-- Enter your custom steps here. -->
+    <MSBuild.ExtensionPack.Compression.Zip 
+		  TaskAction="Create" 
+		  CompressPath="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild)" 
+		  ZipFileName="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild).zip"/>
   </Target>
 
   <Target Name="BeforeBuildDocumentationCustom">
@@ -295,6 +299,9 @@
 
   <Target Name="AfterDropBuildCustom">
     <!-- Enter your custom steps here. -->
+    <Copy
+      SourceFiles="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild).zip" 
+      DestinationFolder="$(DropLocationForBuild)" />
   </Target>
 
   <!-- Only called if "IsEnvironmentDeployBuild" property is set to "true". -->
