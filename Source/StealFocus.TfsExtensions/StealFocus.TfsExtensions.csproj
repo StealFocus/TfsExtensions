@@ -80,7 +80,6 @@
     <Compile Include="TeamProjectResourcePropertyName.cs" />
     <Compile Include="TfsConfigurationServerExtensions.cs" />
     <Compile Include="TfsConfigurationServerFactoryExtensions.cs" />
-    <Compile Include="TfsCredentialsProvider.cs" />
     <Compile Include="Workflow\Activities\UpdateBuildNumber.cs" />
   </ItemGroup>
   <ItemGroup>
