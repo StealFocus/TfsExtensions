@@ -47,6 +47,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StealFocus.TfsExtensions.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StealFocus.TfsExtensions.Web.UI.Tests", "StealFocus.TfsExtensions.Web.UI.Tests\StealFocus.TfsExtensions.Web.UI.Tests.csproj", "{F6A3009C-07C9-4B41-ACAE-AFC186278514}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Artefacts", "Artefacts", "{5DE6DBB2-D091-4388-9B47-942052F852BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{B26EC365-FDB3-4A91-BBE4-B00635EBC1F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StealFocus.TfsExtensions", "StealFocus.TfsExtensions", "{FC4C6F57-90D4-4318-A1DB-C908899E96DC}"
+	ProjectSection(SolutionItems) = preProject
+		Artefacts\NuGet\StealFocus.TfsExtensions\StealFocus.TfsExtensions.nuspec = Artefacts\NuGet\StealFocus.TfsExtensions\StealFocus.TfsExtensions.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = StealFocus.TfsExtensions.vsmdi
@@ -79,5 +88,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DC9CB307-5AA4-49FD-94EF-BC5B2073737D} = {7205E45C-5B5A-41BB-BA69-12436C923833}
 		{F6A3009C-07C9-4B41-ACAE-AFC186278514} = {7205E45C-5B5A-41BB-BA69-12436C923833}
+		{B26EC365-FDB3-4A91-BBE4-B00635EBC1F1} = {5DE6DBB2-D091-4388-9B47-942052F852BB}
+		{FC4C6F57-90D4-4318-A1DB-C908899E96DC} = {B26EC365-FDB3-4A91-BBE4-B00635EBC1F1}
 	EndGlobalSection
 EndGlobal
