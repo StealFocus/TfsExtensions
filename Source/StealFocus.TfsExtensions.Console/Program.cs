@@ -6,7 +6,7 @@
     using StealFocus.TfsExtensions.Build.Client;
 
     /// <remarks>
-    /// <![CDATA[StealFocus.TfsExtensions.Console.exe /tfsUrl:http://server /updateRetentionPolicies /teamProjectName:myTeamProject /numberOfStoppedBuildsToKeep:1 /numberOfFailedBuildsToKeep:10 /numberOfPartiallySucceededBuildsToKeep:10 /numberOfSucceededBuildsToKeep:15 /deleteOptions:All /force:true]]>
+    /// <![CDATA[StealFocus.TfsExtensions.Console.exe /tfsUrl:http://server /updateRetentionPolicies /teamProjectName:myTeamProject /numberOfStoppedBuildsToKeep:1 /numberOfFailedBuildsToKeep:5 /numberOfPartiallySucceededBuildsToKeep:5 /numberOfSucceededBuildsToKeep:10 /deleteOptions:All /force:false]]>
     /// </remarks>
     internal class Program
     {
