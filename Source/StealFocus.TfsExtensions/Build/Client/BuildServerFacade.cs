@@ -13,6 +13,9 @@ namespace StealFocus.TfsExtensions.Build.Client
     using System.Collections;
 
     using Microsoft.TeamFoundation.Build.Client;
+    using Microsoft.TeamFoundation.Client;
+
+    using StealFocus.TfsExtensions.Dto;
 
     public class BuildServerFacade
     {
@@ -21,6 +24,23 @@ namespace StealFocus.TfsExtensions.Build.Client
         public BuildServerFacade(IBuildServer buildServer)
         {
             this.buildServer = buildServer;
+        }
+
+        public static void UpdateRetentionPolicies(Uri tfsUrl, string teamProjectName, int numberOfStoppedBuildsToKeep, int numberOfFailedBuildsToKeep, int numberOfPartiallySucceededBuildsToKeep, int numberOfSucceededBuildsToKeep, string deleteOptions)
+        {
+            TfsConfigurationServer tfsConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(tfsUrl);
+            tfsConfigurationServer.Authenticate();
+            TeamProjectDtoCollection allTeamProjectCollections = tfsConfigurationServer.GetAllTeamProjectsInAllTeamProjectCollections();
+            foreach (TeamProjectDto teamProjectDto in allTeamProjectCollections)
+            {
+                if (teamProjectDto.DisplayName == teamProjectName)
+                {
+                    TfsTeamProjectCollection teamProjectCollection = tfsConfigurationServer.GetTeamProjectCollection(teamProjectDto.CollectionId);
+                    IBuildServer buildServer = teamProjectCollection.GetService<IBuildServer>();
+                    BuildServerFacade buildServerFacade = new BuildServerFacade(buildServer);
+                    buildServerFacade.UpdateRetentionPolicies(teamProjectDto.DisplayName, numberOfStoppedBuildsToKeep, numberOfFailedBuildsToKeep, numberOfPartiallySucceededBuildsToKeep, numberOfSucceededBuildsToKeep, deleteOptions);
+                }
+            }
         }
 
         public string GetLatestBuildNumberFromAllBuildDefinitions(string teamProjectName)

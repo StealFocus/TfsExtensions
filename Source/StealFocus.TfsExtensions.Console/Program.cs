@@ -3,11 +3,7 @@
     using System;
     using System.Globalization;
 
-    using Microsoft.TeamFoundation.Build.Client;
-    using Microsoft.TeamFoundation.Client;
-
     using StealFocus.TfsExtensions.Build.Client;
-    using StealFocus.TfsExtensions.Dto;
 
     /// <remarks>
     /// <![CDATA[StealFocus.TfsExtensions.Console.exe /tfsUrl:http://server /updateRetentionPolicies /teamProjectName:myTeamProject /numberOfStoppedBuildsToKeep:1 /numberOfFailedBuildsToKeep:10 /numberOfPartiallySucceededBuildsToKeep:10 /numberOfSucceededBuildsToKeep:15 /deleteOptions:All /force:true]]>
@@ -28,71 +24,7 @@
                 Uri tfsUrl = new Uri(tfsUrlValue);
                 if (args[1] == "/updateRetentionPolicies")
                 {
-                    string teamProjectName = string.Empty;
-                    int numberOfStoppedBuildsToKeep = 10;
-                    int numberOfFailedBuildsToKeep = 10;
-                    int numberOfPartiallySucceededBuildsToKeep = 10;
-                    int numberOfSucceededBuildsToKeep = 10;
-                    string deleteOptions = string.Empty;
-                    bool force = false;
-                    foreach (string arg in args)
-                    {
-                        if (arg.StartsWith("/teamProjectName", StringComparison.OrdinalIgnoreCase))
-                        {
-                            teamProjectName = arg.Replace("/teamProjectName:", string.Empty);
-                        }
-                        else if (arg.StartsWith("/numberOfStoppedBuildsToKeep", StringComparison.OrdinalIgnoreCase))
-                        {
-                            numberOfStoppedBuildsToKeep = int.Parse(arg.Replace("/numberOfStoppedBuildsToKeep:", string.Empty), CultureInfo.CurrentCulture);
-                        }
-                        else if (arg.StartsWith("/numberOfFailedBuildsToKeep", StringComparison.OrdinalIgnoreCase))
-                        {
-                            numberOfFailedBuildsToKeep = int.Parse(arg.Replace("/numberOfFailedBuildsToKeep:", string.Empty), CultureInfo.CurrentCulture);
-                        }
-                        else if (arg.StartsWith("/numberOfPartiallySucceededBuildsToKeep", StringComparison.OrdinalIgnoreCase))
-                        {
-                            numberOfPartiallySucceededBuildsToKeep = int.Parse(arg.Replace("/numberOfPartiallySucceededBuildsToKeep:", string.Empty), CultureInfo.CurrentCulture);
-                        }
-                        else if (arg.StartsWith("/numberOfSucceededBuildsToKeep", StringComparison.OrdinalIgnoreCase))
-                        {
-                            numberOfSucceededBuildsToKeep = int.Parse(arg.Replace("/numberOfSucceededBuildsToKeep:", string.Empty), CultureInfo.CurrentCulture);
-                        }
-                        else if (arg.StartsWith("/deleteOptions", StringComparison.OrdinalIgnoreCase))
-                        {
-                            deleteOptions = arg.Replace("/deleteOptions:", string.Empty);
-                        }
-                        else if (arg.StartsWith("/force", StringComparison.OrdinalIgnoreCase))
-                        {
-                            force = bool.Parse(arg.Replace("/force:", string.Empty));
-                        }
-                    }
-
-                    System.Console.WriteLine("Updating retention policies across all Build Definitions for Team Project '{0}'.", teamProjectName);
-                    System.Console.WriteLine("Number of stopped builds to keep is '{0}'.", numberOfStoppedBuildsToKeep);
-                    System.Console.WriteLine("Number of failed builds to keep is '{0}'.", numberOfFailedBuildsToKeep);
-                    System.Console.WriteLine("Number of partially succeeded builds to keep is '{0}'.", numberOfPartiallySucceededBuildsToKeep);
-                    System.Console.WriteLine("Number of succeeded builds to keep is '{0}'.", numberOfSucceededBuildsToKeep);
-                    System.Console.WriteLine("Delete options are '{0}'.", deleteOptions);
-                    System.Console.WriteLine();
-                    bool execute = true;
-                    if (!force)
-                    {
-                        System.Console.WriteLine("Are these options correct? (y/n)");
-                        ConsoleKeyInfo consoleKeyInfo = System.Console.ReadKey();
-                        if (consoleKeyInfo.KeyChar != 'y')
-                        {
-                            execute = false;
-                        }
-
-                        System.Console.WriteLine();
-                        System.Console.WriteLine();
-                    }
-
-                    if (execute)
-                    {
-                        UpdateRetentionPolicies(tfsUrl, teamProjectName, numberOfStoppedBuildsToKeep, numberOfFailedBuildsToKeep, numberOfPartiallySucceededBuildsToKeep, numberOfSucceededBuildsToKeep, deleteOptions);
-                        System.Console.WriteLine("Done.");
-                    }
+                    UpdateRetentionPolicies(tfsUrl, args);
                 }
             }
             else
@@ -109,20 +41,72 @@
             System.Console.WriteLine(" /updateRetentionPolicies");
         }
 
-        private static void UpdateRetentionPolicies(Uri tfsUrl, string teamProjectName, int numberOfStoppedBuildsToKeep, int numberOfFailedBuildsToKeep, int numberOfPartiallySucceededBuildsToKeep, int numberOfSucceededBuildsToKeep, string deleteOptions)
+        private static void UpdateRetentionPolicies(Uri tfsUrl, string[] args)
         {
-            TfsConfigurationServer tfsConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(tfsUrl);
-            tfsConfigurationServer.Authenticate();
-            TeamProjectDtoCollection allTeamProjectCollections = tfsConfigurationServer.GetAllTeamProjectsInAllTeamProjectCollections();
-            foreach (TeamProjectDto teamProjectDto in allTeamProjectCollections)
+            string teamProjectName = string.Empty;
+            int numberOfStoppedBuildsToKeep = 10;
+            int numberOfFailedBuildsToKeep = 10;
+            int numberOfPartiallySucceededBuildsToKeep = 10;
+            int numberOfSucceededBuildsToKeep = 10;
+            string deleteOptions = string.Empty;
+            bool force = false;
+            foreach (string arg in args)
             {
-                if (teamProjectDto.DisplayName == teamProjectName)
+                if (arg.StartsWith("/teamProjectName", StringComparison.OrdinalIgnoreCase))
                 {
-                    TfsTeamProjectCollection teamProjectCollection = tfsConfigurationServer.GetTeamProjectCollection(teamProjectDto.CollectionId);
-                    IBuildServer buildServer = teamProjectCollection.GetService<IBuildServer>();
-                    BuildServerFacade buildServerFacade = new BuildServerFacade(buildServer);
-                    buildServerFacade.UpdateRetentionPolicies(teamProjectDto.DisplayName, numberOfStoppedBuildsToKeep, numberOfFailedBuildsToKeep, numberOfPartiallySucceededBuildsToKeep, numberOfSucceededBuildsToKeep, deleteOptions);
+                    teamProjectName = arg.Replace("/teamProjectName:", string.Empty);
                 }
+                else if (arg.StartsWith("/numberOfStoppedBuildsToKeep", StringComparison.OrdinalIgnoreCase))
+                {
+                    numberOfStoppedBuildsToKeep = int.Parse(arg.Replace("/numberOfStoppedBuildsToKeep:", string.Empty), CultureInfo.CurrentCulture);
+                }
+                else if (arg.StartsWith("/numberOfFailedBuildsToKeep", StringComparison.OrdinalIgnoreCase))
+                {
+                    numberOfFailedBuildsToKeep = int.Parse(arg.Replace("/numberOfFailedBuildsToKeep:", string.Empty), CultureInfo.CurrentCulture);
+                }
+                else if (arg.StartsWith("/numberOfPartiallySucceededBuildsToKeep", StringComparison.OrdinalIgnoreCase))
+                {
+                    numberOfPartiallySucceededBuildsToKeep = int.Parse(arg.Replace("/numberOfPartiallySucceededBuildsToKeep:", string.Empty), CultureInfo.CurrentCulture);
+                }
+                else if (arg.StartsWith("/numberOfSucceededBuildsToKeep", StringComparison.OrdinalIgnoreCase))
+                {
+                    numberOfSucceededBuildsToKeep = int.Parse(arg.Replace("/numberOfSucceededBuildsToKeep:", string.Empty), CultureInfo.CurrentCulture);
+                }
+                else if (arg.StartsWith("/deleteOptions", StringComparison.OrdinalIgnoreCase))
+                {
+                    deleteOptions = arg.Replace("/deleteOptions:", string.Empty);
+                }
+                else if (arg.StartsWith("/force", StringComparison.OrdinalIgnoreCase))
+                {
+                    force = bool.Parse(arg.Replace("/force:", string.Empty));
+                }
+            }
+
+            System.Console.WriteLine("Updating retention policies across all Build Definitions for Team Project '{0}'.", teamProjectName);
+            System.Console.WriteLine("Number of stopped builds to keep is '{0}'.", numberOfStoppedBuildsToKeep);
+            System.Console.WriteLine("Number of failed builds to keep is '{0}'.", numberOfFailedBuildsToKeep);
+            System.Console.WriteLine("Number of partially succeeded builds to keep is '{0}'.", numberOfPartiallySucceededBuildsToKeep);
+            System.Console.WriteLine("Number of succeeded builds to keep is '{0}'.", numberOfSucceededBuildsToKeep);
+            System.Console.WriteLine("Delete options are '{0}'.", deleteOptions);
+            System.Console.WriteLine();
+            bool execute = true;
+            if (!force)
+            {
+                System.Console.WriteLine("Are these options correct? (y/n)");
+                ConsoleKeyInfo consoleKeyInfo = System.Console.ReadKey();
+                if (consoleKeyInfo.KeyChar != 'y')
+                {
+                    execute = false;
+                }
+
+                System.Console.WriteLine();
+                System.Console.WriteLine();
+            }
+
+            if (execute)
+            {
+                BuildServerFacade.UpdateRetentionPolicies(tfsUrl, teamProjectName, numberOfStoppedBuildsToKeep, numberOfFailedBuildsToKeep, numberOfPartiallySucceededBuildsToKeep, numberOfSucceededBuildsToKeep, deleteOptions);
+                System.Console.WriteLine("Done.");
             }
         }
     }
