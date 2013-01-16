@@ -68,6 +68,7 @@
     <None Include="..\StealFocus.TfsExtensions.StrongNamePublicKey.snk">
       <Link>StealFocus.TfsExtensions.StrongNamePublicKey.snk</Link>
     </None>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StealFocus.TfsExtensions\StealFocus.TfsExtensions.csproj">

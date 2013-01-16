@@ -273,8 +273,34 @@
     <!-- Enter your custom steps here. -->
   </Target>
 
+  <Target Name="CreateILMergedVersionOfApplication">
+    <PropertyGroup>
+      <ILMergeSourceDirectoryPath>$(BuildDirectoryPath)\$(Configuration)</ILMergeSourceDirectoryPath>
+      <ILMergeTargetDirectoryPath>$(BuildDirectoryPath)\$(Configuration)\ILMerged</ILMergeTargetDirectoryPath>
+      <ILMergeOutputPath>$(ILMergeTargetDirectoryPath)\StealFocus.TfsExtensions.Console.exe</ILMergeOutputPath>
+      <ILMergeAssemblyList>$(ILMergeSourceDirectoryPath)\StealFocus.TfsExtensions.Console.exe $(ILMergeSourceDirectoryPath)\StealFocus.TfsExtensions.dll</ILMergeAssemblyList>
+    </PropertyGroup>
+    <MakeDir
+      Condition=" !Exists('$(ILMergeTargetDirectoryPath)') "
+      Directories="$(ILMergeTargetDirectoryPath)" />
+    <Exec
+      Condition=" '$(IsDesktopBuild)'=='true' "
+      Command="..\packages\ilmerge.2.12.0803\ilmerge.exe /out:$(ILMergeOutputPath) /keyfile:$(StrongNamePublicKeyPath) /delaysign $(ILMergeAssemblyList) /targetplatform:v4" />
+    <Exec
+      Condition=" '$(IsDesktopBuild)'!='true' "
+      Command="..\packages\ilmerge.2.12.0803\ilmerge.exe /out:$(ILMergeOutputPath) /keyfile:$(StrongNameKeyPairPath) $(ILMergeAssemblyList) /targetplatform:v4" />
+    <Copy
+      SourceFiles="$(ILMergeSourceDirectoryPath)\StealFocus.TfsExtensions.Console.exe.config"
+      DestinationFolder="$(ILMergeTargetDirectoryPath)" />
+  </Target>
+
   <Target Name="BeforePackageCustom">
     <!-- Enter your custom steps here. -->
+    <!-- ILMerge the application. -->
+    <MSBuild
+      Projects="$(MSBuildProjectFile)"
+      Targets="CreateILMergedVersionOfApplication"
+      Properties="BuildDirectoryPath=$(BuildDirectoryPath);Configuration=%(ConfigurationToBuild.FlavorToBuild);StrongNameKeyPairPath=$(StrongNameKeyPairPath)" />
   </Target>
 
   <Target Name="CreateNuGetPackages">
@@ -298,15 +324,33 @@
       Directories="..\Artefacts\NuGet\StealFocus.TfsExtensions\lib" />
   </Target>
 
+  <Target Name="CreateApplicationSpecificZips">
+    <ItemGroup>
+      <ApplicationFiles Include="$(BuildDirectoryPath)\$(Configuration)\ILMerged\StealFocus.TfsExtensions.Console.exe" />
+      <ApplicationFiles Include="$(BuildDirectoryPath)\$(Configuration)\ILMerged\StealFocus.TfsExtensions.Console.pdb" />
+    </ItemGroup>
+    <MSBuild.ExtensionPack.Compression.Zip
+      TaskAction="Create"
+      CompressFiles="@(ApplicationFiles)"
+      RemoveRoot="$(BuildDirectoryPath)\$(Configuration)\ILMerged"
+      ZipFileName="$(BuildDirectoryPath)\Console-$(Configuration).zip" />
+  </Target>
+
   <Target Name="AfterPackageCustom">
     <!-- Enter your custom steps here. -->
     <!-- Create NuGet Packages. -->
     <CallTarget Targets="CreateNuGetPackages" />
     <!-- ZIP up each configuration in the build output folder. -->
-    <MSBuild.ExtensionPack.Compression.Zip 
-		  TaskAction="Create" 
-		  CompressPath="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild)" 
+    <MSBuild.ExtensionPack.Compression.Zip
+		  TaskAction="Create"
+		  CompressPath="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild)"
+      RemoveRoot="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild)"
 		  ZipFileName="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild).zip"/>
+    <!-- Create a ZIP for the application. -->
+    <MSBuild
+      Projects="$(MSBuildProjectFile)"
+      Targets="CreateApplicationSpecificZips"
+      Properties="BuildDirectoryPath=$(BuildDirectoryPath);Configuration=%(ConfigurationToBuild.FlavorToBuild)" />
   </Target>
 
   <Target Name="BeforeBuildDocumentationCustom">
@@ -325,7 +369,10 @@
     <!-- Enter your custom steps here. -->
     <!-- Copy ZIP files to drop location. -->
     <Copy
-      SourceFiles="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild).zip" 
+      SourceFiles="$(BuildDirectoryPath)\%(ConfigurationToBuild.FlavorToBuild).zip"
+      DestinationFolder="$(DropLocationForBuild)" />
+    <Copy
+      SourceFiles="$(BuildDirectoryPath)\Console-%(ConfigurationToBuild.FlavorToBuild).zip"
       DestinationFolder="$(DropLocationForBuild)" />
     <!-- Deploy NuGet packages. -->
     <ItemGroup Condition=" '$(IsDesktopBuild)'!='true' ">
