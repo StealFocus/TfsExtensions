@@ -10,7 +10,7 @@
     using StealFocus.TfsExtensions.Dto;
 
     /// <remarks>
-    /// <![CDATA[StealFocus.TfsExtensions.Console.exe /tfsUrl:http://server /updateRetentionPolicies /teamProjectName:myTeamProject /numberOfStoppedBuildsToKeep:1 /numberOfFailedBuildsToKeep:10 /numberOfPartiallySucceededBuildsToKeep:10 /numberOfSucceededBuildsToKeep:15 /deleteOptions:All]]>
+    /// <![CDATA[StealFocus.TfsExtensions.Console.exe /tfsUrl:http://server /updateRetentionPolicies /teamProjectName:myTeamProject /numberOfStoppedBuildsToKeep:1 /numberOfFailedBuildsToKeep:10 /numberOfPartiallySucceededBuildsToKeep:10 /numberOfSucceededBuildsToKeep:15 /deleteOptions:All /force:true]]>
     /// </remarks>
     internal class Program
     {
@@ -34,6 +34,7 @@
                     int numberOfPartiallySucceededBuildsToKeep = 10;
                     int numberOfSucceededBuildsToKeep = 10;
                     string deleteOptions = string.Empty;
+                    bool force = false;
                     foreach (string arg in args)
                     {
                         if (arg.StartsWith("/teamProjectName", StringComparison.OrdinalIgnoreCase))
@@ -60,6 +61,10 @@
                         {
                             deleteOptions = arg.Replace("/deleteOptions:", string.Empty);
                         }
+                        else if (arg.StartsWith("/force", StringComparison.OrdinalIgnoreCase))
+                        {
+                            force = bool.Parse(arg.Replace("/force:", string.Empty));
+                        }
                     }
 
                     System.Console.WriteLine("Updating retention policies across all Build Definitions for Team Project '{0}'.", teamProjectName);
@@ -68,11 +73,27 @@
                     System.Console.WriteLine("Number of partially succeeded builds to keep is '{0}'.", numberOfPartiallySucceededBuildsToKeep);
                     System.Console.WriteLine("Number of succeeded builds to keep is '{0}'.", numberOfSucceededBuildsToKeep);
                     System.Console.WriteLine("Delete options are '{0}'.", deleteOptions);
-                    UpdateRetentionPolicies(tfsUrl, teamProjectName, numberOfStoppedBuildsToKeep, numberOfFailedBuildsToKeep, numberOfPartiallySucceededBuildsToKeep, numberOfSucceededBuildsToKeep, deleteOptions);
-                }
+                    System.Console.WriteLine();
+                    bool execute = true;
+                    if (!force)
+                    {
+                        System.Console.WriteLine("Are these options correct? (y/n)");
+                        ConsoleKeyInfo consoleKeyInfo = System.Console.ReadKey();
+                        if (consoleKeyInfo.KeyChar != 'y')
+                        {
+                            execute = false;
+                        }
 
-                System.Console.WriteLine();
-                System.Console.WriteLine("Done.");
+                        System.Console.WriteLine();
+                        System.Console.WriteLine();
+                    }
+
+                    if (execute)
+                    {
+                        UpdateRetentionPolicies(tfsUrl, teamProjectName, numberOfStoppedBuildsToKeep, numberOfFailedBuildsToKeep, numberOfPartiallySucceededBuildsToKeep, numberOfSucceededBuildsToKeep, deleteOptions);
+                        System.Console.WriteLine("Done.");
+                    }
+                }
             }
             else
             {
@@ -84,7 +105,7 @@
         {
             System.Console.WriteLine("Supported arguments:");
             System.Console.WriteLine(string.Empty);
-            System.Console.WriteLine(" /tfsUrl:http://tfs");
+            System.Console.WriteLine(" /tfsUrl:http://tfsUrl");
             System.Console.WriteLine(" /updateRetentionPolicies");
         }
 
