@@ -9,6 +9,7 @@
 
 namespace StealFocus.TfsExtensions.Build.Client
 {
+    using System;
     using System.Collections;
 
     using Microsoft.TeamFoundation.Build.Client;
@@ -53,6 +54,46 @@ namespace StealFocus.TfsExtensions.Build.Client
             }
 
             return (string[])buildNumberList.ToArray(typeof(string));
+        }
+
+        public void UpdateRetentionPolicies(string teamProjectName, int numberOfStoppedBuildsToKeep, int numberOfFailedBuildsToKeep, int numberOfPartiallySucceededBuildsToKeep, int numberOfSucceededBuildsToKeep, string deleteOptions)
+        {
+            bool isDefined = Enum.IsDefined(typeof(DeleteOptions), deleteOptions);
+            if (!isDefined)
+            {
+                throw new ArgumentException("The provided argument was not a valid value.", "deleteOptions");
+            }
+
+            DeleteOptions deleteOptionsValue = (DeleteOptions)Enum.Parse(typeof(DeleteOptions), deleteOptions);
+            IBuildDefinition[] buildDefinitions = this.buildServer.QueryBuildDefinitions(teamProjectName, QueryOptions.All);
+            foreach (IBuildDefinition buildDefinition in buildDefinitions)
+            {
+                foreach (IRetentionPolicy retentionPolicy in buildDefinition.RetentionPolicyList)
+                {
+                    if (retentionPolicy.BuildStatus == BuildStatus.Stopped)
+                    {
+                        retentionPolicy.NumberToKeep = numberOfStoppedBuildsToKeep;
+                        retentionPolicy.DeleteOptions = deleteOptionsValue;   
+                    }
+                    else if (retentionPolicy.BuildStatus == BuildStatus.Failed)
+                    {
+                        retentionPolicy.NumberToKeep = numberOfFailedBuildsToKeep;
+                        retentionPolicy.DeleteOptions = deleteOptionsValue;
+                    }
+                    else if (retentionPolicy.BuildStatus == BuildStatus.PartiallySucceeded)
+                    {
+                        retentionPolicy.NumberToKeep = numberOfPartiallySucceededBuildsToKeep;
+                        retentionPolicy.DeleteOptions = deleteOptionsValue;
+                    }
+                    else if (retentionPolicy.BuildStatus == BuildStatus.Succeeded)
+                    {
+                        retentionPolicy.NumberToKeep = numberOfSucceededBuildsToKeep;
+                        retentionPolicy.DeleteOptions = deleteOptionsValue;
+                    }
+                }
+
+                buildDefinition.Save();
+            }
         }
     }
 }
