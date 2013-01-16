@@ -14,7 +14,7 @@
     <CSharpProjectFileConfigurationIncludeFilter>$(SolutionDirectoryPath)\**\*.csproj</CSharpProjectFileConfigurationIncludeFilter>
     <VisualBasicProjectFileConfigurationIncludeFilter>$(SolutionDirectoryPath)\**\*.vbproj</VisualBasicProjectFileConfigurationIncludeFilter>
     <WindowsAzureProjectFileConfigurationIncludeFilter>$(SolutionDirectoryPath)\**\*.ccproj</WindowsAzureProjectFileConfigurationIncludeFilter>
-    <ProjectFileConfigurationExcludeFilter>$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI\StealFocus.TfsExtensions.Web.UI.csproj;$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI.Tests\StealFocus.TfsExtensions.Web.UI.Tests.csproj</ProjectFileConfigurationExcludeFilter>
+    <ProjectFileConfigurationExcludeFilter>$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI\StealFocus.TfsExtensions.Console.csproj;$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI\StealFocus.TfsExtensions.Web.UI.csproj;$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI.Tests\StealFocus.TfsExtensions.Console.Tests.csproj;$(SolutionDirectoryPath)\StealFocus.TfsExtensions.Web.UI.Tests\StealFocus.TfsExtensions.Web.UI.Tests.csproj</ProjectFileConfigurationExcludeFilter>
     <CSharpProjectImportFilePath>$(SolutionDirectoryPath)\Scripts\StealFocus.TfsExtensions.Build.Project.CSharp.targets</CSharpProjectImportFilePath>
     <VisualBasicProjectImportFilePath>$(SolutionDirectoryPath)\Scripts\StealFocus.TfsExtensions.Build.Project.VisualBasic.targets</VisualBasicProjectImportFilePath>
     <CodeAnalysisRuleSetFilePath>$(SolutionDirectoryPath)\StealFocus.TfsExtensions.ruleset</CodeAnalysisRuleSetFilePath>
