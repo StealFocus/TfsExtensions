@@ -16,6 +16,10 @@ To update retention polices for all build definitions in a Team Project:
 
     StealFocus.TfsExtensions.Console.exe /tfsUrl:http://server /updateRetentionPolicies /teamProjectName:myTeamProject /numberOfStoppedBuildsToKeep:1 /numberOfFailedBuildsToKeep:5 /numberOfPartiallySucceededBuildsToKeep:5 /numberOfSucceededBuildsToKeep:10 /deleteOptions:All /force:false
 
+To list all Team Build definitions for all Team Projects:
+
+    StealFocus.TfsExtensions.Console.exe /tfsUrl:http://server /listAllTeamBuilds
+	
 Help
 ----
 Contact the mailing list:
