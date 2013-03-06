@@ -57,6 +57,7 @@
             foreach (IBuildDefinition buildDefinition in buildDefinitions)
             {
                 BuildDefinitionDto buildDefinitionDto = new BuildDefinitionDto();
+                buildDefinitionDto.TeamProjectName = buildDefinition.TeamProject;
                 buildDefinitionDto.Name = buildDefinition.Name;
                 buildDefinitionDto.Id = buildDefinition.Id;
                 buildDefinitionDto.Uri = buildDefinition.Uri;

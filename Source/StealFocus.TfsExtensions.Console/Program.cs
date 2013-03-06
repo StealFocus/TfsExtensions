@@ -4,6 +4,7 @@
     using System.Globalization;
 
     using StealFocus.TfsExtensions.Build.Client;
+    using StealFocus.TfsExtensions.Dto;
 
     /// <remarks>
     /// <![CDATA[StealFocus.TfsExtensions.Console.exe /tfsUrl:http://server /updateRetentionPolicies /teamProjectName:myTeamProject /numberOfStoppedBuildsToKeep:1 /numberOfFailedBuildsToKeep:5 /numberOfPartiallySucceededBuildsToKeep:5 /numberOfSucceededBuildsToKeep:10 /deleteOptions:All /force:false]]>
@@ -26,6 +27,10 @@
                 {
                     UpdateRetentionPolicies(tfsUrl, args);
                 }
+                else if (args[1] == "/listAllTeamBuilds")
+                {
+                    ListAllTeamBuilds(tfsUrl);
+                }
             }
             else
             {
@@ -38,7 +43,7 @@
             System.Console.WriteLine("Supported arguments:");
             System.Console.WriteLine(string.Empty);
             System.Console.WriteLine(" /tfsUrl:http://tfsUrl");
-            System.Console.WriteLine(" /updateRetentionPolicies");
+            System.Console.WriteLine(" /updateRetentionPolicies OR /listAllTeamBuilds");
         }
 
         private static void UpdateRetentionPolicies(Uri tfsUrl, string[] args)
@@ -108,6 +113,27 @@
                 BuildServerFacade.UpdateRetentionPolicies(tfsUrl, teamProjectName, numberOfStoppedBuildsToKeep, numberOfFailedBuildsToKeep, numberOfPartiallySucceededBuildsToKeep, numberOfSucceededBuildsToKeep, deleteOptions);
                 System.Console.WriteLine("Done.");
             }
+        }
+
+        private static void ListAllTeamBuilds(Uri tfsUrl)
+        {
+            System.Console.WriteLine("Listing all Team Builds for all Team Projects.");
+            BuildDefinitionDtoCollection buildDefinitionDtoCollection = BuildServerFacade.ListTeamBuilds(tfsUrl);
+            string currentTeamProject = null;
+            foreach (BuildDefinitionDto buildDefinitionDto in buildDefinitionDtoCollection)
+            {
+                if (buildDefinitionDto.TeamProjectName != currentTeamProject)
+                {
+                    System.Console.WriteLine();
+                    System.Console.WriteLine("Team Project: '{0}'.", buildDefinitionDto.TeamProjectName);
+                }
+
+                System.Console.WriteLine("Team Build: '{0}'.", buildDefinitionDto.Name);
+                currentTeamProject = buildDefinitionDto.TeamProjectName;
+            }
+
+            System.Console.WriteLine();
+            System.Console.WriteLine("Done.");
         }
     }
 }

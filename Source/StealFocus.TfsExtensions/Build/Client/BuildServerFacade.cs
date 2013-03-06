@@ -43,6 +43,23 @@ namespace StealFocus.TfsExtensions.Build.Client
             }
         }
 
+        public static BuildDefinitionDtoCollection ListTeamBuilds(Uri tfsUrl)
+        {
+            TfsConfigurationServer tfsConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(tfsUrl);
+            TeamProjectDtoCollection teamProjectCollections = tfsConfigurationServer.GetAllTeamProjectsInAllTeamProjectCollections();
+            BuildDefinitionDtoCollection all = new BuildDefinitionDtoCollection();
+            foreach (TeamProjectDto teamProjectCollection in teamProjectCollections)
+            {
+                BuildDefinitionDtoCollection buildDefinitionDtoCollection = tfsConfigurationServer.GetBuildDefinitions(teamProjectCollection.CollectionId, teamProjectCollection.DisplayName);
+                foreach (BuildDefinitionDto buildDefinitionDto in buildDefinitionDtoCollection)
+                {
+                    all.Add(buildDefinitionDto);
+                }
+            }
+
+            return all;
+        }
+
         public string GetLatestBuildNumberFromAllBuildDefinitions(string teamProjectName)
         {
             IBuildDetailSpec buildDetailSpec = this.buildServer.CreateBuildDetailSpec(teamProjectName);
